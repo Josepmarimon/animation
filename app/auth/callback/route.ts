@@ -1,83 +1,69 @@
-import { createClient } from '@/lib/supabase/server'
-import { NextResponse } from 'next/server'
+import { createServerClient, type CookieOptions } from '@supabase/ssr'
+import { cookies } from 'next/headers'
+import { NextResponse, type NextRequest } from 'next/server'
 
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
   const requestUrl = new URL(request.url)
   const code = requestUrl.searchParams.get('code')
-  const token_hash = requestUrl.searchParams.get('token_hash')
-  const type = requestUrl.searchParams.get('type')
   const next = requestUrl.searchParams.get('next') ?? '/'
-  const error = requestUrl.searchParams.get('error')
-  const error_description = requestUrl.searchParams.get('error_description')
 
   console.log('=== AUTH CALLBACK DEBUG ===')
   console.log('URL:', requestUrl.toString())
   console.log('Code:', code)
-  console.log('Token hash:', token_hash)
-  console.log('Type:', type)
-  console.log('Error:', error)
-  console.log('Error description:', error_description)
 
-  // Si hay un error en la URL, redirigir a error page
-  if (error) {
-    console.error('Error in URL params:', error, error_description)
-    return NextResponse.redirect(`${requestUrl.origin}/auth/auth-code-error?reason=url_error`)
-  }
-
-  const supabase = await createClient()
-
-  // Manejar flujo PKCE (code exchange)
   if (code) {
+    const cookieStore = await cookies()
+    const response = NextResponse.redirect(new URL(next, requestUrl.origin))
+
+    const supabase = createServerClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      {
+        cookies: {
+          get(name: string) {
+            return cookieStore.get(name)?.value
+          },
+          set(name: string, value: string, options: CookieOptions) {
+            cookieStore.set({ name, value, ...options })
+            response.cookies.set({ name, value, ...options })
+          },
+          remove(name: string, options: CookieOptions) {
+            cookieStore.set({ name, value: '', ...options })
+            response.cookies.set({ name, value: '', ...options })
+          },
+        },
+      }
+    )
+
     console.log('Attempting code exchange...')
     const { data, error: exchangeError } = await supabase.auth.exchangeCodeForSession(code)
 
     console.log('Exchange result:', {
       hasData: !!data,
+      hasSession: !!data?.session,
       hasUser: !!data?.user,
       error: exchangeError?.message
     })
 
     if (exchangeError) {
       console.error('Code exchange error:', exchangeError)
-      return NextResponse.redirect(`${requestUrl.origin}/auth/auth-code-error?reason=exchange_failed`)
+      return NextResponse.redirect(
+        new URL(`/auth/auth-code-error?reason=exchange_failed&details=${encodeURIComponent(exchangeError.message)}`, requestUrl.origin)
+      )
     }
 
     if (data?.user) {
       console.log('User authenticated via code exchange:', data.user.id)
       await ensureUserProfile(supabase, data.user)
-      return NextResponse.redirect(`${requestUrl.origin}${next}`)
+      return response
     }
   }
 
-  // Manejar flujo OTP (token_hash)
-  if (token_hash && type) {
-    console.log('Attempting OTP verification...')
-    const { data, error: verifyError } = await supabase.auth.verifyOtp({
-      type: type as any,
-      token_hash,
-    })
-
-    console.log('Verify result:', {
-      hasData: !!data,
-      hasUser: !!data?.user,
-      error: verifyError?.message
-    })
-
-    if (verifyError) {
-      console.error('OTP verification error:', verifyError)
-      return NextResponse.redirect(`${requestUrl.origin}/auth/auth-code-error?reason=otp_failed&details=${encodeURIComponent(verifyError.message)}`)
-    }
-
-    if (data?.user) {
-      console.log('User authenticated via OTP:', data.user.id)
-      await ensureUserProfile(supabase, data.user)
-      return NextResponse.redirect(`${requestUrl.origin}${next}`)
-    }
-  }
-
-  // Si llegamos aquí, algo salió mal
-  console.error('No valid authentication method found')
-  return NextResponse.redirect(`${requestUrl.origin}/auth/auth-code-error?reason=no_auth_method`)
+  // Si no hay código o algo falló
+  console.error('No valid authentication code found')
+  return NextResponse.redirect(
+    new URL('/auth/auth-code-error?reason=no_code', requestUrl.origin)
+  )
 }
 
 async function ensureUserProfile(supabase: any, user: any) {
@@ -88,7 +74,7 @@ async function ensureUserProfile(supabase: any, user: any) {
     .from('profiles')
     .select('id')
     .eq('id', user.id)
-    .single()
+    .maybeSingle()
 
   console.log('Profile check result:', {
     exists: !!existingProfile,
@@ -101,7 +87,14 @@ async function ensureUserProfile(supabase: any, user: any) {
   }
 
   // Crear perfil
-  console.log('Creating new profile...')
+  console.log('Creating new profile with data:', {
+    id: user.id,
+    email: user.email,
+    full_name: user.user_metadata?.full_name || 'Usuario Nuevo',
+    country: user.user_metadata?.country || 'No especificado',
+    city: user.user_metadata?.city || 'No especificado',
+  })
+
   const { error: profileError } = await supabase.from('profiles').insert({
     id: user.id,
     email: user.email,
