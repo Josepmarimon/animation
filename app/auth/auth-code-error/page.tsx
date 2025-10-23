@@ -1,6 +1,12 @@
 import Link from 'next/link'
 
-export default function AuthCodeError() {
+export default function AuthCodeError({
+  searchParams,
+}: {
+  searchParams: { reason?: string; details?: string }
+}) {
+  const { reason, details } = searchParams
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
       <div className="w-full max-w-md space-y-8">
@@ -14,6 +20,19 @@ export default function AuthCodeError() {
             <li>• El enlace ya fue utilizado</li>
             <li>• Hubo un problema de configuración</li>
           </ul>
+
+          {reason && (
+            <div className="mb-4 p-3 bg-red-100 rounded text-left">
+              <p className="text-xs font-mono text-red-800">
+                <strong>Código de error:</strong> {reason}
+              </p>
+              {details && (
+                <p className="text-xs font-mono text-red-700 mt-1">
+                  <strong>Detalles:</strong> {decodeURIComponent(details)}
+                </p>
+              )}
+            </div>
+          )}
           <div className="space-y-3">
             <Link
               href="/auth/signup"
