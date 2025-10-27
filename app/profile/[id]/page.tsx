@@ -71,24 +71,32 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
   const featuredImage = portfolioProjects.find((p: any) => p.is_featured) || portfolioProjects[0]
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <nav className="bg-white shadow-sm">
+    <div className="relative min-h-screen bg-gradient-to-br from-blue-600 via-indigo-700 to-purple-800">
+      {/* Animated background elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-2000"></div>
+        <div className="absolute top-40 left-40 w-80 h-80 bg-indigo-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-4000"></div>
+      </div>
+
+      {/* Navigation */}
+      <nav className="relative z-10 bg-white bg-opacity-10 backdrop-blur-md border-b border-white border-opacity-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex h-16 justify-between items-center">
-            <Link href="/" className="text-xl font-bold text-gray-900">
+          <div className="flex h-20 justify-between items-center">
+            <Link href="/" className="text-2xl font-bold text-white">
               Animation Directory
             </Link>
             <div className="flex items-center space-x-4">
               <Link
                 href="/directory"
-                className="text-gray-700 hover:text-gray-900"
+                className="rounded-lg bg-white bg-opacity-20 backdrop-blur-sm px-5 py-2.5 text-sm font-medium text-white hover:bg-opacity-30 transition-all"
               >
                 Directory
               </Link>
               {user && (
                 <Link
                   href="/profile"
-                  className="text-gray-700 hover:text-gray-900"
+                  className="rounded-lg bg-white bg-opacity-20 backdrop-blur-sm px-5 py-2.5 text-sm font-medium text-white hover:bg-opacity-30 transition-all"
                 >
                   My Profile
                 </Link>
@@ -98,9 +106,9 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
         </div>
       </nav>
 
-      <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+      <main className="relative z-10 mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         {/* Hero Section with Avatar */}
-        <div className="bg-gradient-to-r from-blue-500 to-indigo-600 rounded-lg shadow-xl overflow-hidden mb-8">
+        <div className="bg-white bg-opacity-10 backdrop-blur-md border border-white border-opacity-20 rounded-2xl shadow-2xl overflow-hidden mb-8">
           <div className="px-6 py-12 sm:px-12">
             <div className="flex flex-col sm:flex-row items-center gap-6">
               {/* Avatar */}
