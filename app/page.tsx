@@ -53,16 +53,16 @@ export default async function Home() {
               {user ? (
                 <>
                   <Link
-                    href="/profile"
-                    className="rounded-lg bg-white bg-opacity-20 backdrop-blur-sm px-5 py-2.5 text-sm font-medium text-white hover:bg-opacity-30 transition-all"
-                  >
-                    My Profile
-                  </Link>
-                  <Link
                     href="/directory"
                     className="rounded-lg bg-white px-5 py-2.5 text-sm font-medium text-blue-700 hover:bg-gray-100 transition-all"
                   >
                     Directory
+                  </Link>
+                  <Link
+                    href="/profile"
+                    className="rounded-lg bg-white bg-opacity-20 backdrop-blur-sm px-5 py-2.5 text-sm font-medium text-white hover:bg-opacity-30 transition-all"
+                  >
+                    My Profile
                   </Link>
                 </>
               ) : (
