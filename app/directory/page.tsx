@@ -59,57 +59,61 @@ export default async function DirectoryPage() {
                   key={profile.id}
                   className="bg-white shadow rounded-lg overflow-hidden hover:shadow-lg transition-shadow"
                 >
-                  {/* Featured Image or Avatar */}
-                  <div className="relative aspect-video bg-gradient-to-br from-blue-100 to-indigo-100">
-                    {featuredImage ? (
-                      <Image
-                        src={featuredImage.url}
-                        alt={profile.full_name || 'Profile'}
-                        fill
-                        className="object-cover"
-                      />
-                    ) : profile.avatar_url ? (
-                      <Image
-                        src={profile.avatar_url}
-                        alt={profile.full_name || 'Profile'}
-                        fill
-                        className="object-cover"
-                      />
-                    ) : (
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="h-24 w-24 rounded-full bg-white flex items-center justify-center text-blue-600 font-bold text-4xl shadow-lg">
-                          {profile.full_name?.charAt(0).toUpperCase() || '?'}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="p-6">
-                    <div className="flex items-center space-x-3 mb-4">
-                      <div className="flex-shrink-0">
-                        {profile.avatar_url ? (
-                          <Image
-                            src={profile.avatar_url}
-                            alt={profile.full_name || 'Avatar'}
-                            width={48}
-                            height={48}
-                            className="h-12 w-12 rounded-full object-cover"
-                          />
-                        ) : (
-                          <div className="h-12 w-12 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-lg">
+                  {/* Featured Image or Avatar - Clickable */}
+                  <Link href={`/profile/${profile.id}`} className="block">
+                    <div className="relative aspect-video bg-gradient-to-br from-blue-100 to-indigo-100 cursor-pointer">
+                      {featuredImage ? (
+                        <Image
+                          src={featuredImage.url}
+                          alt={profile.full_name || 'Profile'}
+                          fill
+                          className="object-cover hover:opacity-90 transition-opacity"
+                        />
+                      ) : profile.avatar_url ? (
+                        <Image
+                          src={profile.avatar_url}
+                          alt={profile.full_name || 'Profile'}
+                          fill
+                          className="object-cover hover:opacity-90 transition-opacity"
+                        />
+                      ) : (
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <div className="h-24 w-24 rounded-full bg-white flex items-center justify-center text-blue-600 font-bold text-4xl shadow-lg">
                             {profile.full_name?.charAt(0).toUpperCase() || '?'}
                           </div>
-                        )}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-lg font-medium text-gray-900 truncate">
-                          {profile.full_name}
-                        </p>
-                        <p className="text-sm text-gray-500 truncate">
-                          {profile.city}, {profile.country}
-                        </p>
-                      </div>
+                        </div>
+                      )}
                     </div>
+                  </Link>
+
+                  <div className="p-6">
+                    <Link href={`/profile/${profile.id}`} className="block mb-4 group">
+                      <div className="flex items-center space-x-3">
+                        <div className="flex-shrink-0">
+                          {profile.avatar_url ? (
+                            <Image
+                              src={profile.avatar_url}
+                              alt={profile.full_name || 'Avatar'}
+                              width={48}
+                              height={48}
+                              className="h-12 w-12 rounded-full object-cover"
+                            />
+                          ) : (
+                            <div className="h-12 w-12 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-lg">
+                              {profile.full_name?.charAt(0).toUpperCase() || '?'}
+                            </div>
+                          )}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-lg font-medium text-gray-900 truncate group-hover:text-blue-600 transition-colors">
+                            {profile.full_name}
+                          </p>
+                          <p className="text-sm text-gray-500 truncate">
+                            {profile.city}, {profile.country}
+                          </p>
+                        </div>
+                      </div>
+                    </Link>
 
                     {profile.bio && (
                       <p className="mb-4 text-sm text-gray-600 line-clamp-2">
@@ -118,7 +122,7 @@ export default async function DirectoryPage() {
                     )}
 
                     {profile.specializations && profile.specializations.length > 0 && (
-                      <div className="mb-4 flex flex-wrap gap-2">
+                      <div className="flex flex-wrap gap-2">
                         {profile.specializations.slice(0, 3).map((spec: string) => (
                           <span
                             key={spec}
@@ -134,10 +138,6 @@ export default async function DirectoryPage() {
                         )}
                       </div>
                     )}
-
-                    <button className="w-full rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700">
-                      View profile
-                    </button>
                   </div>
                 </div>
               )
