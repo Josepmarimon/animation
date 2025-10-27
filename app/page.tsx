@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
 import Image from 'next/image'
+import InteractiveBackground from './components/InteractiveBackground'
 
 // Helper function to format specialization names
 function formatSpecialization(spec: string): string {
@@ -27,17 +28,13 @@ export default async function Home() {
 
   return (
     <div className="relative min-h-screen bg-gradient-to-br from-blue-600 via-indigo-700 to-purple-800">
-      {/* Background Image */}
+      {/* Background Image with Interactive Popup */}
       <div className="absolute inset-0 overflow-hidden">
-        <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-30"
-          style={{ backgroundImage: 'url(/demo-profiles/fondo.jpg)' }}
-        ></div>
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-600/50 via-indigo-700/50 to-purple-800/50"></div>
+        <InteractiveBackground />
       </div>
 
       {/* Animated background elements */}
-      <div className="absolute inset-0 overflow-hidden">
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-10 animate-blob"></div>
         <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl opacity-10 animate-blob animation-delay-2000"></div>
         <div className="absolute top-40 left-40 w-80 h-80 bg-indigo-500 rounded-full mix-blend-multiply filter blur-xl opacity-10 animate-blob animation-delay-4000"></div>
