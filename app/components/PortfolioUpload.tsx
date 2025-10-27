@@ -9,6 +9,7 @@ interface PortfolioImage {
   url: string
   title: string
   description: string
+  is_featured?: boolean
 }
 
 interface PortfolioUploadProps {
@@ -72,7 +73,8 @@ export default function PortfolioUpload({ userId, initialImages = [], onImagesCh
         id: Date.now().toString(),
         url: publicUrl,
         title: '',
-        description: ''
+        description: '',
+        is_featured: images.length === 0 // First image is featured by default
       }
 
       const updatedImages = [...images, newImage]
@@ -94,6 +96,15 @@ export default function PortfolioUpload({ userId, initialImages = [], onImagesCh
     const updatedImages = images.map(img =>
       img.id === id ? { ...img, [field]: value } : img
     )
+    setImages(updatedImages)
+    onImagesChange(updatedImages)
+  }
+
+  const setFeaturedImage = (id: string) => {
+    const updatedImages = images.map(img => ({
+      ...img,
+      is_featured: img.id === id
+    }))
     setImages(updatedImages)
     onImagesChange(updatedImages)
   }
@@ -120,9 +131,12 @@ export default function PortfolioUpload({ userId, initialImages = [], onImagesCh
   return (
     <div className="space-y-6">
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-3">
+        <label className="block text-sm font-medium text-gray-700 mb-2">
           Portfolio Images
         </label>
+        <p className="text-xs text-gray-500 mb-3">
+          The featured image will be displayed prominently on your profile and in the directory.
+        </p>
 
         {/* Upload button */}
         <div className="mb-4">
@@ -156,10 +170,17 @@ export default function PortfolioUpload({ userId, initialImages = [], onImagesCh
         {images.length > 0 && (
           <div className="space-y-6">
             {images.map((image) => (
-              <div key={image.id} className="border border-gray-200 rounded-lg p-4">
+              <div
+                key={image.id}
+                className={`border rounded-lg p-4 ${
+                  image.is_featured
+                    ? 'border-blue-500 bg-blue-50 ring-2 ring-blue-500 ring-opacity-50'
+                    : 'border-gray-200'
+                }`}
+              >
                 <div className="flex gap-4">
                   {/* Image preview */}
-                  <div className="flex-shrink-0">
+                  <div className="flex-shrink-0 relative">
                     <Image
                       src={image.url}
                       alt={image.title || 'Portfolio image'}
@@ -167,6 +188,11 @@ export default function PortfolioUpload({ userId, initialImages = [], onImagesCh
                       height={120}
                       className="rounded-lg object-cover w-40 h-30"
                     />
+                    {image.is_featured && (
+                      <div className="absolute top-2 right-2 bg-blue-600 text-white text-xs px-2 py-1 rounded-full font-medium">
+                        Featured
+                      </div>
+                    )}
                   </div>
 
                   {/* Image details */}
@@ -197,13 +223,24 @@ export default function PortfolioUpload({ userId, initialImages = [], onImagesCh
                       />
                     </div>
 
-                    <button
-                      type="button"
-                      onClick={() => deleteImage(image.id, image.url)}
-                      className="text-sm text-red-600 hover:text-red-700"
-                    >
-                      Delete image
-                    </button>
+                    <div className="flex gap-3">
+                      {!image.is_featured && (
+                        <button
+                          type="button"
+                          onClick={() => setFeaturedImage(image.id)}
+                          className="text-sm text-blue-600 hover:text-blue-700 font-medium"
+                        >
+                          Set as featured image
+                        </button>
+                      )}
+                      <button
+                        type="button"
+                        onClick={() => deleteImage(image.id, image.url)}
+                        className="text-sm text-red-600 hover:text-red-700"
+                      >
+                        Delete image
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>

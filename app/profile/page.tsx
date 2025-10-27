@@ -62,6 +62,7 @@ export default async function ProfilePage() {
 
   const contactInfo = profile?.contact_info || {}
   const portfolioProjects = profile?.portfolio_projects || []
+  const featuredImage = portfolioProjects.find((p: any) => p.is_featured) || portfolioProjects[0]
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -189,6 +190,40 @@ export default async function ProfilePage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-8">
+            {/* Featured Image Section */}
+            {featuredImage && (
+              <div className="bg-white shadow rounded-lg overflow-hidden">
+                <div className="relative aspect-video bg-gray-100">
+                  <Image
+                    src={featuredImage.url}
+                    alt={featuredImage.title || 'Featured work'}
+                    fill
+                    className="object-cover"
+                    priority
+                  />
+                  {featuredImage.is_featured && (
+                    <div className="absolute top-4 left-4 bg-blue-600 text-white text-sm px-3 py-1.5 rounded-full font-medium shadow-lg">
+                      Featured Work
+                    </div>
+                  )}
+                </div>
+                {(featuredImage.title || featuredImage.description) && (
+                  <div className="p-6">
+                    {featuredImage.title && (
+                      <h3 className="text-xl font-bold text-gray-900 mb-2">
+                        {featuredImage.title}
+                      </h3>
+                    )}
+                    {featuredImage.description && (
+                      <p className="text-gray-600">
+                        {featuredImage.description}
+                      </p>
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
+
             {/* Bio Section */}
             {profile?.bio && (
               <div className="bg-white shadow rounded-lg p-6">
