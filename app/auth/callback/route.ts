@@ -59,7 +59,7 @@ export async function GET(request: NextRequest) {
     }
   }
 
-  // Si no hay código o algo falló
+  // If there's no code or something failed
   console.error('No valid authentication code found')
   return NextResponse.redirect(
     new URL('/auth/auth-code-error?reason=no_code', requestUrl.origin)
@@ -69,7 +69,7 @@ export async function GET(request: NextRequest) {
 async function ensureUserProfile(supabase: any, user: any) {
   console.log('Checking if profile exists for user:', user.id)
 
-  // Verificar si el perfil existe
+  // Check if profile exists
   const { data: existingProfile, error: selectError } = await supabase
     .from('profiles')
     .select('id')
@@ -86,21 +86,21 @@ async function ensureUserProfile(supabase: any, user: any) {
     return
   }
 
-  // Crear perfil
+  // Create profile
   console.log('Creating new profile with data:', {
     id: user.id,
     email: user.email,
-    full_name: user.user_metadata?.full_name || 'Usuario Nuevo',
-    country: user.user_metadata?.country || 'No especificado',
-    city: user.user_metadata?.city || 'No especificado',
+    full_name: user.user_metadata?.full_name || 'New User',
+    country: user.user_metadata?.country || 'Not specified',
+    city: user.user_metadata?.city || 'Not specified',
   })
 
   const { error: profileError } = await supabase.from('profiles').insert({
     id: user.id,
     email: user.email,
-    full_name: user.user_metadata?.full_name || 'Usuario Nuevo',
-    country: user.user_metadata?.country || 'No especificado',
-    city: user.user_metadata?.city || 'No especificado',
+    full_name: user.user_metadata?.full_name || 'New User',
+    country: user.user_metadata?.country || 'Not specified',
+    city: user.user_metadata?.city || 'Not specified',
   })
 
   if (profileError) {
@@ -109,7 +109,7 @@ async function ensureUserProfile(supabase: any, user: any) {
     console.log('Profile created successfully')
   }
 
-  // Asignar rol standard
+  // Assign standard role
   console.log('Creating user role...')
   const { error: roleError } = await supabase.from('user_roles').insert({
     user_id: user.id,

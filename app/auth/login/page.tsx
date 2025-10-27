@@ -33,23 +33,37 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
-      <div className="w-full max-w-md space-y-8">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
-            Inicia sesión
+    <div className="relative flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-600 via-indigo-700 to-purple-800 px-4">
+      {/* Animated background elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-2000"></div>
+        <div className="absolute top-40 left-40 w-80 h-80 bg-indigo-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-4000"></div>
+      </div>
+
+      {/* Home Link */}
+      <div className="absolute top-8 left-8 z-10">
+        <Link href="/" className="text-2xl font-bold text-white hover:text-blue-100 transition-colors">
+          Animation Directory
+        </Link>
+      </div>
+
+      <div className="relative z-10 w-full max-w-md space-y-8">
+        <div className="text-center">
+          <h2 className="text-4xl font-bold tracking-tight text-white">
+            Welcome back
           </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
-            ¿No tienes cuenta?{' '}
-            <Link href="/auth/signup" className="font-medium text-blue-600 hover:text-blue-500">
-              Regístrate aquí
+          <p className="mt-2 text-sm text-blue-100">
+            Don't have an account?{' '}
+            <Link href="/auth/signup" className="font-medium text-white underline hover:text-blue-100">
+              Sign up here
             </Link>
           </p>
         </div>
-        <form className="mt-8 space-y-6" onSubmit={handleLogin}>
-          <div className="space-y-4 rounded-md shadow-sm">
+        <form className="mt-8 space-y-6 bg-white bg-opacity-10 backdrop-blur-md border border-white border-opacity-20 rounded-2xl p-8 shadow-2xl" onSubmit={handleLogin}>
+          <div className="space-y-4">
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="email" className="block text-sm font-medium text-white">
                 Email
               </label>
               <input
@@ -60,13 +74,13 @@ export default function LoginPage() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:outline-none focus:ring-blue-500"
-                placeholder="tu@email.com"
+                className="mt-1 block w-full rounded-lg border border-white border-opacity-20 bg-white bg-opacity-10 px-4 py-3 text-white placeholder-blue-200 focus:border-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50 backdrop-blur-sm"
+                placeholder="you@email.com"
               />
             </div>
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                Contraseña
+              <label htmlFor="password" className="block text-sm font-medium text-white">
+                Password
               </label>
               <input
                 id="password"
@@ -76,24 +90,24 @@ export default function LoginPage() {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:outline-none focus:ring-blue-500"
-                placeholder="Tu contraseña"
+                className="mt-1 block w-full rounded-lg border border-white border-opacity-20 bg-white bg-opacity-10 px-4 py-3 text-white placeholder-blue-200 focus:border-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50 backdrop-blur-sm"
+                placeholder="Your password"
               />
             </div>
           </div>
 
           {error && (
-            <div className="rounded-md bg-red-50 p-4">
-              <p className="text-sm text-red-800">{error}</p>
+            <div className="rounded-lg bg-red-500 bg-opacity-20 backdrop-blur-sm border border-red-400 border-opacity-50 p-4">
+              <p className="text-sm text-white">{error}</p>
             </div>
           )}
 
           <button
             type="submit"
             disabled={loading}
-            className="group relative flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:opacity-50"
+            className="group relative flex w-full justify-center rounded-xl bg-white px-6 py-4 text-base font-semibold text-blue-700 hover:bg-gray-100 shadow-xl hover:scale-105 transform transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {loading ? 'Iniciando sesión...' : 'Iniciar sesión'}
+            {loading ? 'Logging in...' : 'Log in'}
           </button>
         </form>
       </div>

@@ -5,7 +5,7 @@ import { createClient } from '@/lib/supabase/server'
 export async function createUserProfile(userId: string, email: string, fullName: string, country: string, city: string) {
   const supabase = await createClient()
 
-  // Crear perfil
+  // Create profile
   const { error: profileError } = await supabase
     .from('profiles')
     .insert({
@@ -21,7 +21,7 @@ export async function createUserProfile(userId: string, email: string, fullName:
     throw profileError
   }
 
-  // Asignar rol standard
+  // Assign standard role
   const { error: roleError } = await supabase
     .from('user_roles')
     .insert({

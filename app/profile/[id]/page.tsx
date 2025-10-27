@@ -1,5 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
-import { redirect } from 'next/navigation'
+import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 
@@ -36,28 +36,34 @@ const ArtStationIcon = () => (
   </svg>
 )
 
-export default async function ProfilePage() {
+interface ProfilePageProps {
+  params: Promise<{ id: string }>
+}
+
+export default async function ProfilePage({ params }: ProfilePageProps) {
+  const { id } = await params
   const supabase = await createClient()
 
+  // Check if user is logged in
   const {
     data: { user },
   } = await supabase.auth.getUser()
 
-  if (!user) {
-    redirect('/auth/login')
-  }
-
+  // Fetch the profile by ID
   const { data: profile } = await supabase
     .from('profiles')
     .select('*')
-    .eq('id', user.id)
+    .eq('id', id)
     .single()
 
-  const handleSignOut = async () => {
-    'use server'
-    const supabase = await createClient()
-    await supabase.auth.signOut()
-    redirect('/auth/login')
+  if (!profile) {
+    notFound()
+  }
+
+  // Check if profile is public or if it's the user's own profile
+  const isOwnProfile = user?.id === profile.id
+  if (!profile.is_public && !isOwnProfile) {
+    notFound()
   }
 
   const contactInfo = profile?.contact_info || {}
@@ -87,14 +93,14 @@ export default async function ProfilePage() {
               >
                 Directory
               </Link>
-              <form action={handleSignOut}>
-                <button
-                  type="submit"
+              {user && (
+                <Link
+                  href="/profile"
                   className="rounded-lg bg-white bg-opacity-20 backdrop-blur-sm px-5 py-2.5 text-sm font-medium text-white hover:bg-opacity-30 transition-all"
                 >
-                  Log out
-                </button>
-              </form>
+                  My Profile
+                </Link>
+              )}
             </div>
           </div>
         </div>
@@ -117,7 +123,7 @@ export default async function ProfilePage() {
                   />
                 ) : (
                   <div className="h-32 w-32 rounded-full bg-white flex items-center justify-center text-blue-600 text-4xl font-bold ring-4 ring-white shadow-lg">
-                    {profile?.full_name?.charAt(0).toUpperCase() || user.email?.charAt(0).toUpperCase()}
+                    {profile?.full_name?.charAt(0).toUpperCase() || '?'}
                   </div>
                 )}
               </div>
@@ -182,15 +188,17 @@ export default async function ProfilePage() {
                 )}
               </div>
 
-              {/* Edit Button */}
-              <div className="flex-shrink-0">
-                <Link
-                  href="/profile/edit"
-                  className="inline-block rounded-md bg-white px-6 py-3 text-sm font-medium text-blue-600 hover:bg-gray-50 shadow-lg"
-                >
-                  Edit Profile
-                </Link>
-              </div>
+              {/* Edit Button - Only show if it's the user's own profile */}
+              {isOwnProfile && (
+                <div className="flex-shrink-0">
+                  <Link
+                    href="/profile/edit"
+                    className="inline-block rounded-md bg-white px-6 py-3 text-sm font-medium text-blue-600 hover:bg-gray-50 shadow-lg"
+                  >
+                    Edit Profile
+                  </Link>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -306,23 +314,6 @@ export default async function ProfilePage() {
                   </dd>
                 </div>
               </dl>
-            </div>
-
-            {/* Visibility Status */}
-            <div className="bg-white shadow rounded-lg p-6">
-              <div className="flex items-center gap-3">
-                <div className={`flex-shrink-0 w-3 h-3 rounded-full ${profile?.is_public ? 'bg-green-500' : 'bg-gray-400'}`} />
-                <div>
-                  <p className="text-sm font-medium text-gray-900">
-                    {profile?.is_public ? 'Public Profile' : 'Private Profile'}
-                  </p>
-                  <p className="text-xs text-gray-500 mt-1">
-                    {profile?.is_public
-                      ? 'Your profile is visible in the directory'
-                      : 'Your profile is hidden from the directory'}
-                  </p>
-                </div>
-              </div>
             </div>
           </div>
         </div>
