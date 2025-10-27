@@ -11,6 +11,38 @@ function formatSpecialization(spec: string): string {
     .join(' ')
 }
 
+// Helper function to get YouTube embed URL
+function getYouTubeEmbedUrl(url: string): string | null {
+  try {
+    const urlObj = new URL(url)
+    let videoId = null
+
+    if (urlObj.hostname.includes('youtube.com')) {
+      videoId = urlObj.searchParams.get('v')
+    } else if (urlObj.hostname.includes('youtu.be')) {
+      videoId = urlObj.pathname.slice(1)
+    }
+
+    return videoId ? `https://www.youtube.com/embed/${videoId}` : null
+  } catch {
+    return null
+  }
+}
+
+// Helper function to get Vimeo embed URL
+function getVimeoEmbedUrl(url: string): string | null {
+  try {
+    const urlObj = new URL(url)
+    if (urlObj.hostname.includes('vimeo.com')) {
+      const videoId = urlObj.pathname.split('/').filter(Boolean)[0]
+      return `https://player.vimeo.com/video/${videoId}`
+    }
+    return null
+  } catch {
+    return null
+  }
+}
+
 // Social media icon components
 const LinkedInIcon = () => (
   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -48,6 +80,17 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
   const {
     data: { user },
   } = await supabase.auth.getUser()
+
+  // Get current user's profile for avatar in navigation
+  let userProfile = null
+  if (user) {
+    const { data } = await supabase
+      .from('profiles')
+      .select('avatar_url, full_name')
+      .eq('id', user.id)
+      .single()
+    userProfile = data
+  }
 
   // Fetch the profile by ID
   const { data: profile } = await supabase
@@ -96,9 +139,22 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
               {user && (
                 <Link
                   href="/profile"
-                  className="rounded-lg bg-white bg-opacity-20 backdrop-blur-sm px-5 py-2.5 text-sm font-medium text-white hover:bg-opacity-30 transition-all"
+                  className="flex items-center justify-center w-12 h-12 rounded-full bg-white bg-opacity-20 backdrop-blur-sm hover:bg-opacity-30 transition-all overflow-hidden border-2 border-white border-opacity-30"
+                  title="My Profile"
                 >
-                  My Profile
+                  {userProfile?.avatar_url ? (
+                    <Image
+                      src={userProfile.avatar_url}
+                      alt={userProfile.full_name || 'Profile'}
+                      width={48}
+                      height={48}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-white font-bold text-lg">
+                      {userProfile?.full_name?.charAt(0).toUpperCase() || user.email?.charAt(0).toUpperCase() || '?'}
+                    </div>
+                  )}
                 </Link>
               )}
             </div>
@@ -242,9 +298,54 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
 
             {/* Bio Section */}
             {profile?.bio && (
-              <div className="bg-white shadow rounded-lg p-6">
+              <div className="bg-white shadow rounded-lg p-6 mb-6">
                 <h2 className="text-xl font-bold text-gray-900 mb-4">About</h2>
                 <p className="text-gray-700 whitespace-pre-wrap">{profile.bio}</p>
+              </div>
+            )}
+
+            {/* Video Showcase Section */}
+            {(contactInfo.youtube || contactInfo.vimeo) && (
+              <div className="bg-white shadow rounded-lg p-6 mb-6">
+                <h2 className="text-xl font-bold text-gray-900 mb-6">Video Showcase</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {contactInfo.youtube && getYouTubeEmbedUrl(contactInfo.youtube) && (
+                    <div className="space-y-2">
+                      <div className="relative aspect-video rounded-lg overflow-hidden bg-gray-100">
+                        <iframe
+                          src={getYouTubeEmbedUrl(contactInfo.youtube) || ''}
+                          className="absolute inset-0 w-full h-full"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                        ></iframe>
+                      </div>
+                      <p className="text-sm text-gray-600 flex items-center gap-2">
+                        <svg className="w-4 h-4 text-red-600" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                        </svg>
+                        YouTube
+                      </p>
+                    </div>
+                  )}
+                  {contactInfo.vimeo && getVimeoEmbedUrl(contactInfo.vimeo) && (
+                    <div className="space-y-2">
+                      <div className="relative aspect-video rounded-lg overflow-hidden bg-gray-100">
+                        <iframe
+                          src={getVimeoEmbedUrl(contactInfo.vimeo) || ''}
+                          className="absolute inset-0 w-full h-full"
+                          allow="autoplay; fullscreen; picture-in-picture"
+                          allowFullScreen
+                        ></iframe>
+                      </div>
+                      <p className="text-sm text-gray-600 flex items-center gap-2">
+                        <svg className="w-4 h-4 text-blue-500" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M23.977 6.416c-.105 2.338-1.739 5.543-4.894 9.609-3.268 4.247-6.026 6.37-8.29 6.37-1.409 0-2.578-1.294-3.553-3.881L5.322 11.4C4.603 8.816 3.834 7.522 3.01 7.522c-.179 0-.806.378-1.881 1.132L0 7.197c1.185-1.044 2.351-2.084 3.501-3.128C5.08 2.701 6.266 1.984 7.055 1.91c1.867-.18 3.016 1.1 3.447 3.838.465 2.953.789 4.789.971 5.507.539 2.45 1.131 3.674 1.776 3.674.502 0 1.256-.796 2.265-2.385 1.004-1.589 1.54-2.797 1.612-3.628.144-1.371-.395-2.061-1.614-2.061-.574 0-1.167.121-1.777.391 1.186-3.868 3.434-5.757 6.762-5.637 2.473.06 3.628 1.664 3.493 4.797l-.013.01z"/>
+                        </svg>
+                        Vimeo
+                      </p>
+                    </div>
+                  )}
+                </div>
               </div>
             )}
 
