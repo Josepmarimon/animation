@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
 import Image from 'next/image'
+import DirectoryFilters from '@/app/components/DirectoryFilters'
 
 // Helper function to format specialization names
 function formatSpecialization(spec: string): string {
@@ -10,15 +11,45 @@ function formatSpecialization(spec: string): string {
     .join(' ')
 }
 
-export default async function DirectoryPage() {
+interface DirectoryPageProps {
+  searchParams: Promise<{ specialization?: string; country?: string }>
+}
+
+export default async function DirectoryPage({ searchParams }: DirectoryPageProps) {
+  const params = await searchParams
   const supabase = await createClient()
 
-  const { data: profiles } = await supabase
+  // Get all countries for filter dropdown
+  const { data: allProfiles } = await supabase
+    .from('profiles')
+    .select('country')
+    .eq('is_public', true)
+
+  const countries = Array.from(new Set(
+    (allProfiles || [])
+      .map(p => p.country)
+      .filter((c): c is string => !!c)
+  )).sort()
+
+  // Build query with filters
+  let query = supabase
     .from('profiles')
     .select('*')
     .eq('is_public', true)
+
+  // Apply specialization filter
+  if (params.specialization) {
+    query = query.contains('specializations', [params.specialization])
+  }
+
+  // Apply country filter
+  if (params.country) {
+    query = query.eq('country', params.country)
+  }
+
+  const { data: profiles } = await query
     .order('created_at', { ascending: false })
-    .limit(20)
+    .limit(100)
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -47,6 +78,21 @@ export default async function DirectoryPage() {
             Explore animation professional profiles from around the world
           </p>
         </div>
+
+        {/* Filters */}
+        <DirectoryFilters countries={countries} />
+
+        {/* Results count */}
+        {profiles && (
+          <div className="mb-6">
+            <p className="text-sm text-gray-600">
+              {profiles.length === 0
+                ? 'No profiles found matching your filters'
+                : `Showing ${profiles.length} ${profiles.length === 1 ? 'profile' : 'profiles'}`
+              }
+            </p>
+          </div>
+        )}
 
         {profiles && profiles.length > 0 ? (
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -144,8 +190,28 @@ export default async function DirectoryPage() {
             })}
           </div>
         ) : (
-          <div className="text-center py-12">
-            <p className="text-gray-500">No public profiles available yet.</p>
+          <div className="text-center py-12 bg-white rounded-lg shadow">
+            <div className="max-w-md mx-auto px-4">
+              <svg
+                className="mx-auto h-12 w-12 text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                />
+              </svg>
+              <h3 className="mt-4 text-lg font-medium text-gray-900">No profiles found</h3>
+              <p className="mt-2 text-sm text-gray-500">
+                {params.specialization || params.country
+                  ? 'Try adjusting your filters to see more results.'
+                  : 'No public profiles available yet.'}
+              </p>
+            </div>
           </div>
         )}
       </main>
