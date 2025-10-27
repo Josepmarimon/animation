@@ -1,5 +1,14 @@
 import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
+import Image from 'next/image'
+
+// Helper function to format specialization names
+function formatSpecialization(spec: string): string {
+  return spec
+    .split('_')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ')
+}
 
 export default async function Home() {
   const supabase = await createClient()
@@ -7,6 +16,14 @@ export default async function Home() {
   const {
     data: { user },
   } = await supabase.auth.getUser()
+
+  // Get latest 6 public users
+  const { data: latestUsers } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('is_public', true)
+    .order('created_at', { ascending: false })
+    .limit(6)
 
   return (
     <div className="relative min-h-screen bg-gradient-to-br from-blue-600 via-indigo-700 to-purple-800">
@@ -64,7 +81,7 @@ export default async function Home() {
       </nav>
 
       {/* Hero Section - Full Screen */}
-      <main className="relative z-10 flex items-center justify-center px-4 sm:px-6 lg:px-8" style={{ minHeight: 'calc(100vh - 5rem)' }}>
+      <div className="relative z-10 flex items-center justify-center px-4 sm:px-6 lg:px-8" style={{ minHeight: 'calc(100vh - 5rem)' }}>
         <div className="text-center max-w-5xl mx-auto">
           <h2 className="text-5xl font-extrabold tracking-tight text-white sm:text-7xl md:text-8xl mb-8 animate-fade-in">
             Find and connect with
@@ -148,7 +165,109 @@ export default async function Home() {
             </div>
           </div>
         </div>
-      </main>
+      </div>
+
+      {/* New Users on the Network */}
+      {latestUsers && latestUsers.length > 0 && (
+        <div className="relative z-10 mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+          <h2 className="text-3xl font-bold text-white mb-8">New Users on the network</h2>
+
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {latestUsers.map((profile) => {
+              const portfolioProjects = profile.portfolio_projects || []
+              const featuredImage = portfolioProjects.find((p: any) => p.is_featured) || portfolioProjects[0]
+
+              return (
+                <div
+                  key={profile.id}
+                  className="bg-white bg-opacity-10 backdrop-blur-md border border-white border-opacity-20 shadow-lg rounded-lg overflow-hidden hover:shadow-2xl transition-shadow"
+                >
+                  {/* Featured Image or Avatar - Clickable */}
+                  <Link href={`/profile/${profile.id}`} className="block">
+                    <div className="relative aspect-video bg-gradient-to-br from-blue-100 to-indigo-100 cursor-pointer">
+                      {featuredImage ? (
+                        <Image
+                          src={featuredImage.url}
+                          alt={profile.full_name || 'Profile'}
+                          fill
+                          className="object-cover hover:opacity-90 transition-opacity"
+                        />
+                      ) : profile.avatar_url ? (
+                        <Image
+                          src={profile.avatar_url}
+                          alt={profile.full_name || 'Profile'}
+                          fill
+                          className="object-cover hover:opacity-90 transition-opacity"
+                        />
+                      ) : (
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <div className="h-24 w-24 rounded-full bg-white flex items-center justify-center text-blue-600 font-bold text-4xl shadow-lg">
+                            {profile.full_name?.charAt(0).toUpperCase() || '?'}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </Link>
+
+                  <div className="p-6">
+                    <Link href={`/profile/${profile.id}`} className="block mb-4 group">
+                      <div className="flex items-center space-x-3">
+                        <div className="flex-shrink-0">
+                          {profile.avatar_url ? (
+                            <Image
+                              src={profile.avatar_url}
+                              alt={profile.full_name || 'Avatar'}
+                              width={48}
+                              height={48}
+                              className="h-12 w-12 rounded-full object-cover"
+                            />
+                          ) : (
+                            <div className="h-12 w-12 rounded-full bg-white bg-opacity-20 backdrop-blur-sm flex items-center justify-center text-white font-bold text-lg">
+                              {profile.full_name?.charAt(0).toUpperCase() || '?'}
+                            </div>
+                          )}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-lg font-medium text-white truncate group-hover:text-blue-200 transition-colors">
+                            {profile.full_name}
+                          </p>
+                          <p className="text-sm text-blue-100 truncate">
+                            {profile.city}, {profile.country}
+                          </p>
+                        </div>
+                      </div>
+                    </Link>
+
+                    {profile.bio && (
+                      <p className="mb-4 text-sm text-blue-100 line-clamp-2">
+                        {profile.bio}
+                      </p>
+                    )}
+
+                    {profile.specializations && profile.specializations.length > 0 && (
+                      <div className="flex flex-wrap gap-2">
+                        {profile.specializations.slice(0, 3).map((spec: string) => (
+                          <span
+                            key={spec}
+                            className="inline-flex items-center rounded-full bg-white bg-opacity-20 backdrop-blur-sm px-3 py-0.5 text-xs font-medium text-white border border-white border-opacity-20"
+                          >
+                            {formatSpecialization(spec)}
+                          </span>
+                        ))}
+                        {profile.specializations.length > 3 && (
+                          <span className="inline-flex items-center rounded-full bg-white bg-opacity-10 backdrop-blur-sm px-3 py-0.5 text-xs font-medium text-blue-100 border border-white border-opacity-20">
+                            +{profile.specializations.length - 3} more
+                          </span>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      )}
     </div>
   )
 }
