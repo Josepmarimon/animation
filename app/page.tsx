@@ -18,6 +18,17 @@ export default async function Home() {
     data: { user },
   } = await supabase.auth.getUser()
 
+  // Get user profile for avatar
+  let userProfile = null
+  if (user) {
+    const { data } = await supabase
+      .from('profiles')
+      .select('avatar_url, full_name')
+      .eq('id', user.id)
+      .single()
+    userProfile = data
+  }
+
   // Get latest 6 public users
   const { data: latestUsers } = await supabase
     .from('profiles')
@@ -60,9 +71,22 @@ export default async function Home() {
                   </Link>
                   <Link
                     href="/profile"
-                    className="rounded-lg bg-white bg-opacity-20 backdrop-blur-sm px-5 py-2.5 text-sm font-medium text-white hover:bg-opacity-30 transition-all"
+                    className="flex items-center justify-center w-12 h-12 rounded-full bg-white bg-opacity-20 backdrop-blur-sm hover:bg-opacity-30 transition-all overflow-hidden border-2 border-white border-opacity-30"
+                    title="My Profile"
                   >
-                    My Profile
+                    {userProfile?.avatar_url ? (
+                      <Image
+                        src={userProfile.avatar_url}
+                        alt={userProfile.full_name || 'Profile'}
+                        width={48}
+                        height={48}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-white font-bold text-lg">
+                        {userProfile?.full_name?.charAt(0).toUpperCase() || user.email?.charAt(0).toUpperCase() || '?'}
+                      </div>
+                    )}
                   </Link>
                 </>
               ) : (
