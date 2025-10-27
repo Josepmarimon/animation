@@ -4,7 +4,15 @@
 -- Description: Adds example YouTube video to all demo user profiles
 -- Video: https://www.youtube.com/watch?v=p5SygzMSLhM
 
--- Update all demo users (those with "(demo)" in their name)
+-- First, remove invalid Vimeo profile URLs (not video URLs) from demo users
+UPDATE public.profiles
+SET contact_info = contact_info - 'vimeo'
+WHERE full_name LIKE '%(demo)%'
+  AND contact_info->>'vimeo' IS NOT NULL
+  AND contact_info->>'vimeo' NOT LIKE '%/video/%'
+  AND contact_info->>'vimeo' NOT LIKE '%player.vimeo.com%';
+
+-- Then add the example YouTube video to all demo users
 UPDATE public.profiles
 SET contact_info = jsonb_set(
   COALESCE(contact_info, '{}'::jsonb),
