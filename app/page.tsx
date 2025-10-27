@@ -27,11 +27,20 @@ export default async function Home() {
 
   return (
     <div className="relative min-h-screen bg-gradient-to-br from-blue-600 via-indigo-700 to-purple-800">
+      {/* Background Image */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-30"
+          style={{ backgroundImage: 'url(/demo-profiles/fondo.jpg)' }}
+        ></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-600/50 via-indigo-700/50 to-purple-800/50"></div>
+      </div>
+
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob"></div>
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-2000"></div>
-        <div className="absolute top-40 left-40 w-80 h-80 bg-indigo-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-4000"></div>
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-10 animate-blob"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl opacity-10 animate-blob animation-delay-2000"></div>
+        <div className="absolute top-40 left-40 w-80 h-80 bg-indigo-500 rounded-full mix-blend-multiply filter blur-xl opacity-10 animate-blob animation-delay-4000"></div>
       </div>
 
       {/* Navigation */}
@@ -82,14 +91,14 @@ export default async function Home() {
 
       {/* Hero Section - Full Screen */}
       <div className="relative z-10 flex items-center justify-center px-4 sm:px-6 lg:px-8" style={{ minHeight: 'calc(100vh - 5rem)' }}>
-        <div className="text-center max-w-5xl mx-auto">
-          <h2 className="text-5xl font-extrabold tracking-tight text-white sm:text-7xl md:text-8xl mb-8 animate-fade-in">
+        <div className="text-center max-w-4xl mx-auto">
+          <h2 className="text-3xl font-extrabold tracking-tight text-white sm:text-5xl md:text-6xl mb-6 animate-fade-in">
             Find and connect with
             <span className="block bg-gradient-to-r from-blue-200 to-purple-200 bg-clip-text text-transparent">
               animation professionals
             </span>
           </h2>
-          <p className="mt-8 text-xl sm:text-2xl leading-relaxed text-blue-100 max-w-3xl mx-auto">
+          <p className="mt-6 text-base sm:text-lg leading-relaxed text-blue-100 max-w-2xl mx-auto">
             Join the largest community of animation professionals.
             Share your portfolio, find collaborators, and grow your network.
           </p>
