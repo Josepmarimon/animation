@@ -36,9 +36,9 @@ export default function InteractiveBackground() {
             top: `${mousePosition.y + 15}px`,
           }}
         >
-          <div className="bg-white bg-opacity-95 backdrop-blur-md rounded-lg shadow-2xl border border-gray-200 p-3 max-w-xs">
-            <p className="text-xs text-gray-800 leading-relaxed">
-              <span className="font-semibold text-blue-700">&quot;Vokabulantis&quot;</span> is a video game created by{' '}
+          <div className="bg-white bg-opacity-20 backdrop-blur-md rounded-lg shadow-2xl border border-white border-opacity-30 p-3 max-w-xs">
+            <p className="text-xs text-white leading-relaxed">
+              <span className="font-semibold text-blue-100">&quot;Vokabulantis&quot;</span> is a video game created by{' '}
               <span className="font-medium">Morten Søndergaard</span>, animator{' '}
               <span className="font-medium">Johan Oettinger</span>, and the studio that brings the puppets to life,{' '}
               <span className="font-medium">Wired Fly</span>.
