@@ -17,14 +17,14 @@ export default async function DirectoryPage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 justify-between items-center">
             <Link href="/" className="text-xl font-bold text-gray-900">
-              Directorio de Animación
+              Animation Directory
             </Link>
             <div className="flex items-center space-x-4">
               <Link
                 href="/profile"
                 className="text-gray-700 hover:text-gray-900"
               >
-                Mi Perfil
+                My Profile
               </Link>
             </div>
           </div>
@@ -33,9 +33,9 @@ export default async function DirectoryPage() {
 
       <main className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Directorio de Profesionales</h1>
+          <h1 className="text-3xl font-bold text-gray-900">Professionals Directory</h1>
           <p className="mt-2 text-gray-600">
-            Explora perfiles de profesionales de animación de todo el mundo
+            Explore animation professional profiles from around the world
           </p>
         </div>
 
@@ -81,7 +81,7 @@ export default async function DirectoryPage() {
                       ))}
                       {profile.specializations.length > 3 && (
                         <span className="inline-flex items-center rounded-full bg-gray-100 px-3 py-0.5 text-xs font-medium text-gray-800">
-                          +{profile.specializations.length - 3} más
+                          +{profile.specializations.length - 3} more
                         </span>
                       )}
                     </div>
@@ -89,7 +89,7 @@ export default async function DirectoryPage() {
 
                   <div className="mt-4">
                     <button className="w-full rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700">
-                      Ver perfil
+                      View profile
                     </button>
                   </div>
                 </div>
@@ -98,7 +98,7 @@ export default async function DirectoryPage() {
           </div>
         ) : (
           <div className="text-center py-12">
-            <p className="text-gray-500">No hay perfiles públicos disponibles aún.</p>
+            <p className="text-gray-500">No public profiles available yet.</p>
           </div>
         )}
       </main>

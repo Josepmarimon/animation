@@ -49,12 +49,12 @@ export default function SignupPage() {
       <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
         <div className="w-full max-w-md space-y-8">
           <div className="rounded-lg bg-green-50 p-6 text-center">
-            <h2 className="text-2xl font-bold text-green-900 mb-4">¡Registro exitoso!</h2>
+            <h2 className="text-2xl font-bold text-green-900 mb-4">Registration successful!</h2>
             <p className="text-green-700 mb-4">
-              Hemos enviado un email de confirmación a <strong>{email}</strong>
+              We've sent a confirmation email to <strong>{email}</strong>
             </p>
             <p className="text-sm text-green-600">
-              Por favor, revisa tu correo y haz clic en el enlace de confirmación para activar tu cuenta.
+              Please check your email and click the confirmation link to activate your account.
             </p>
           </div>
         </div>
@@ -67,12 +67,12 @@ export default function SignupPage() {
       <div className="w-full max-w-md space-y-8">
         <div>
           <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
-            Crea tu cuenta
+            Create your account
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
-            ¿Ya tienes cuenta?{' '}
+            Already have an account?{' '}
             <Link href="/auth/login" className="font-medium text-blue-600 hover:text-blue-500">
-              Inicia sesión aquí
+              Log in here
             </Link>
           </p>
         </div>
@@ -80,7 +80,7 @@ export default function SignupPage() {
           <div className="space-y-4 rounded-md shadow-sm">
             <div>
               <label htmlFor="fullName" className="block text-sm font-medium text-gray-700">
-                Nombre completo
+                Full name
               </label>
               <input
                 id="fullName"
@@ -90,7 +90,7 @@ export default function SignupPage() {
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
                 className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:outline-none focus:ring-blue-500"
-                placeholder="Tu nombre completo"
+                placeholder="Your full name"
               />
             </div>
 
@@ -107,13 +107,13 @@ export default function SignupPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:outline-none focus:ring-blue-500"
-                placeholder="tu@email.com"
+                placeholder="you@email.com"
               />
             </div>
 
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                Contraseña (mínimo 6 caracteres)
+                Password (minimum 6 characters)
               </label>
               <input
                 id="password"
@@ -125,13 +125,13 @@ export default function SignupPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:outline-none focus:ring-blue-500"
-                placeholder="Tu contraseña"
+                placeholder="Your password"
               />
             </div>
 
             <div>
               <label htmlFor="country" className="block text-sm font-medium text-gray-700">
-                País
+                Country
               </label>
               <input
                 id="country"
@@ -141,13 +141,13 @@ export default function SignupPage() {
                 value={country}
                 onChange={(e) => setCountry(e.target.value)}
                 className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:outline-none focus:ring-blue-500"
-                placeholder="Ej: España"
+                placeholder="e.g: Spain"
               />
             </div>
 
             <div>
               <label htmlFor="city" className="block text-sm font-medium text-gray-700">
-                Ciudad
+                City
               </label>
               <input
                 id="city"
@@ -157,7 +157,7 @@ export default function SignupPage() {
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
                 className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:outline-none focus:ring-blue-500"
-                placeholder="Ej: Barcelona"
+                placeholder="e.g: Barcelona"
               />
             </div>
           </div>
@@ -173,7 +173,7 @@ export default function SignupPage() {
             disabled={loading}
             className="group relative flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:opacity-50"
           >
-            {loading ? 'Creando cuenta...' : 'Crear cuenta'}
+            {loading ? 'Creating account...' : 'Create account'}
           </button>
         </form>
       </div>
