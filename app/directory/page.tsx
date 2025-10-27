@@ -52,17 +52,25 @@ export default async function DirectoryPage({ searchParams }: DirectoryPageProps
     .limit(100)
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <nav className="bg-white shadow-sm">
+    <div className="relative min-h-screen bg-gradient-to-br from-blue-600 via-indigo-700 to-purple-800">
+      {/* Animated background elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-2000"></div>
+        <div className="absolute top-40 left-40 w-80 h-80 bg-indigo-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-4000"></div>
+      </div>
+
+      {/* Navigation */}
+      <nav className="relative z-10 bg-white bg-opacity-10 backdrop-blur-md border-b border-white border-opacity-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex h-16 justify-between items-center">
-            <Link href="/" className="text-xl font-bold text-gray-900">
+          <div className="flex h-20 justify-between items-center">
+            <Link href="/" className="text-2xl font-bold text-white">
               Animation Directory
             </Link>
             <div className="flex items-center space-x-4">
               <Link
                 href="/profile"
-                className="text-gray-700 hover:text-gray-900"
+                className="rounded-lg bg-white bg-opacity-20 backdrop-blur-sm px-5 py-2.5 text-sm font-medium text-white hover:bg-opacity-30 transition-all"
               >
                 My Profile
               </Link>
@@ -71,11 +79,11 @@ export default async function DirectoryPage({ searchParams }: DirectoryPageProps
         </div>
       </nav>
 
-      <main className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+      <main className="relative z-10 mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         {/* Header with title and subtitle */}
         <div className="mb-6">
-          <h1 className="text-3xl font-bold text-gray-900">Professionals Directory</h1>
-          <p className="mt-2 text-sm text-gray-600">
+          <h1 className="text-4xl font-bold text-white">Professionals Directory</h1>
+          <p className="mt-2 text-sm text-blue-100">
             Explore animation professional profiles from around the world
           </p>
         </div>
@@ -86,7 +94,7 @@ export default async function DirectoryPage({ searchParams }: DirectoryPageProps
         {/* Results count */}
         {profiles && (
           <div className="mb-6">
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-blue-200">
               {profiles.length === 0
                 ? 'No profiles found matching your filters'
                 : `${profiles.length} ${profiles.length === 1 ? 'profile' : 'profiles'}`
@@ -191,10 +199,10 @@ export default async function DirectoryPage({ searchParams }: DirectoryPageProps
             })}
           </div>
         ) : (
-          <div className="text-center py-12 bg-white rounded-lg shadow">
+          <div className="text-center py-12 bg-white bg-opacity-10 backdrop-blur-md rounded-2xl border border-white border-opacity-20">
             <div className="max-w-md mx-auto px-4">
               <svg
-                className="mx-auto h-12 w-12 text-gray-400"
+                className="mx-auto h-12 w-12 text-blue-200"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -206,8 +214,8 @@ export default async function DirectoryPage({ searchParams }: DirectoryPageProps
                   d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
                 />
               </svg>
-              <h3 className="mt-4 text-lg font-medium text-gray-900">No profiles found</h3>
-              <p className="mt-2 text-sm text-gray-500">
+              <h3 className="mt-4 text-lg font-medium text-white">No profiles found</h3>
+              <p className="mt-2 text-sm text-blue-100">
                 {params.specialization || params.country
                   ? 'Try adjusting your filters to see more results.'
                   : 'No public profiles available yet.'}
