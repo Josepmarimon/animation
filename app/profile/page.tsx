@@ -2,6 +2,14 @@ import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
 
+// Helper function to format specialization names
+function formatSpecialization(spec: string): string {
+  return spec
+    .split('_')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ')
+}
+
 export default async function ProfilePage() {
   const supabase = await createClient()
 
@@ -87,7 +95,7 @@ export default async function ProfilePage() {
                   <dt className="text-sm font-medium text-gray-500">Specializations</dt>
                   <dd className="mt-1 text-sm text-gray-900">
                     {profile.specializations?.length > 0
-                      ? profile.specializations.join(', ')
+                      ? profile.specializations.map((s: string) => formatSpecialization(s)).join(', ')
                       : 'You haven\'t added any specializations yet.'}
                   </dd>
                 </div>
@@ -97,9 +105,12 @@ export default async function ProfilePage() {
             )}
 
             <div className="mt-8">
-              <button className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700">
+              <Link
+                href="/profile/edit"
+                className="inline-block rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+              >
                 Edit profile
-              </button>
+              </Link>
             </div>
           </div>
         </div>

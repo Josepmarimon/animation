@@ -1,6 +1,14 @@
 import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
 
+// Helper function to format specialization names
+function formatSpecialization(spec: string): string {
+  return spec
+    .split('_')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ')
+}
+
 export default async function DirectoryPage() {
   const supabase = await createClient()
 
@@ -76,7 +84,7 @@ export default async function DirectoryPage() {
                           key={spec}
                           className="inline-flex items-center rounded-full bg-blue-100 px-3 py-0.5 text-xs font-medium text-blue-800"
                         >
-                          {spec.replace(/_/g, ' ')}
+                          {formatSpecialization(spec)}
                         </span>
                       ))}
                       {profile.specializations.length > 3 && (
