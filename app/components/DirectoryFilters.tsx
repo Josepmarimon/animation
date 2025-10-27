@@ -35,35 +35,20 @@ export default function DirectoryFilters({ countries }: DirectoryFiltersProps) {
     searchParams.get('country') || ''
   )
 
-  const handleSpecializationClick = (value: string) => {
-    const params = new URLSearchParams(searchParams.toString())
-
-    // Toggle: if clicking the same specialization, clear it
-    const newValue = selectedSpecialization === value ? '' : value
-
-    if (newValue) {
-      params.set('specialization', newValue)
-    } else {
-      params.delete('specialization')
-    }
-
-    setSelectedSpecialization(newValue)
-
-    startTransition(() => {
-      router.push(`/directory?${params.toString()}`)
-    })
-  }
-
-  const handleCountryChange = (value: string) => {
+  const handleFilterChange = (type: 'specialization' | 'country', value: string) => {
     const params = new URLSearchParams(searchParams.toString())
 
     if (value) {
-      params.set('country', value)
+      params.set(type, value)
     } else {
-      params.delete('country')
+      params.delete(type)
     }
 
-    setSelectedCountry(value)
+    if (type === 'specialization') {
+      setSelectedSpecialization(value)
+    } else {
+      setSelectedCountry(value)
+    }
 
     startTransition(() => {
       router.push(`/directory?${params.toString()}`)
@@ -81,62 +66,38 @@ export default function DirectoryFilters({ countries }: DirectoryFiltersProps) {
   const hasActiveFilters = selectedSpecialization || selectedCountry
 
   return (
-    <div className="bg-white shadow rounded-lg p-6 mb-8">
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-lg font-semibold text-gray-900">Filters</h2>
-        {hasActiveFilters && (
-          <button
-            onClick={clearFilters}
-            className="text-sm text-blue-600 hover:text-blue-800 font-medium transition-colors"
-          >
-            Clear all
-          </button>
-        )}
-      </div>
-
-      {/* Specialization Quick Filters */}
-      <div className="mb-6">
-        <label className="block text-sm font-medium text-gray-700 mb-3">
-          Specialization
-        </label>
-        <div className="flex flex-wrap gap-2">
-          {SPECIALIZATIONS.map((spec) => {
-            const isSelected = selectedSpecialization === spec.value
-            return (
-              <button
-                key={spec.value}
-                onClick={() => handleSpecializationClick(spec.value)}
-                disabled={isPending}
-                className={`
-                  px-4 py-2 rounded-full text-sm font-medium transition-all duration-200
-                  ${isSelected
-                    ? 'bg-blue-600 text-white shadow-md hover:bg-blue-700'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:shadow'
-                  }
-                  disabled:opacity-50 disabled:cursor-not-allowed
-                `}
-              >
-                {spec.label}
-              </button>
-            )
-          })}
+    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 mb-8">
+      {/* Specialization Dropdown */}
+      <div className="relative flex-1 min-w-0">
+        <select
+          id="specialization"
+          value={selectedSpecialization}
+          onChange={(e) => handleFilterChange('specialization', e.target.value)}
+          disabled={isPending}
+          className="w-full h-12 pl-4 pr-10 text-sm bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed appearance-none cursor-pointer hover:border-gray-300 transition-colors"
+        >
+          <option value="">All specializations</option>
+          {SPECIALIZATIONS.map((spec) => (
+            <option key={spec.value} value={spec.value}>
+              {spec.label}
+            </option>
+          ))}
+        </select>
+        <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+          <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+          </svg>
         </div>
       </div>
 
-      {/* Country Filter */}
-      <div>
-        <label
-          htmlFor="country"
-          className="block text-sm font-medium text-gray-700 mb-3"
-        >
-          Country
-        </label>
+      {/* Country Dropdown */}
+      <div className="relative flex-1 min-w-0">
         <select
           id="country"
           value={selectedCountry}
-          onChange={(e) => handleCountryChange(e.target.value)}
+          onChange={(e) => handleFilterChange('country', e.target.value)}
           disabled={isPending}
-          className="w-full md:w-64 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50"
+          className="w-full h-12 pl-4 pr-10 text-sm bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed appearance-none cursor-pointer hover:border-gray-300 transition-colors"
         >
           <option value="">All countries</option>
           {countries.map((country) => (
@@ -145,7 +106,22 @@ export default function DirectoryFilters({ countries }: DirectoryFiltersProps) {
             </option>
           ))}
         </select>
+        <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+          <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+          </svg>
+        </div>
       </div>
+
+      {/* Clear Button */}
+      {hasActiveFilters && (
+        <button
+          onClick={clearFilters}
+          className="h-12 px-5 text-sm font-medium text-gray-600 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 hover:border-gray-300 transition-colors whitespace-nowrap"
+        >
+          Clear filters
+        </button>
+      )}
     </div>
   )
 }

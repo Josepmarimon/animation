@@ -71,10 +71,11 @@ export default async function DirectoryPage({ searchParams }: DirectoryPageProps
         </div>
       </nav>
 
-      <main className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-        <div className="mb-8">
+      <main className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+        {/* Header with title and subtitle */}
+        <div className="mb-6">
           <h1 className="text-3xl font-bold text-gray-900">Professionals Directory</h1>
-          <p className="mt-2 text-gray-600">
+          <p className="mt-2 text-sm text-gray-600">
             Explore animation professional profiles from around the world
           </p>
         </div>
@@ -85,10 +86,10 @@ export default async function DirectoryPage({ searchParams }: DirectoryPageProps
         {/* Results count */}
         {profiles && (
           <div className="mb-6">
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-gray-500">
               {profiles.length === 0
                 ? 'No profiles found matching your filters'
-                : `Showing ${profiles.length} ${profiles.length === 1 ? 'profile' : 'profiles'}`
+                : `${profiles.length} ${profiles.length === 1 ? 'profile' : 'profiles'}`
               }
             </p>
           </div>
