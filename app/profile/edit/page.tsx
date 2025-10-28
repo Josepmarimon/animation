@@ -216,6 +216,18 @@ export default function EditProfilePage() {
             </Link>
             <div className="flex items-center space-x-4">
               <Link
+                href="/directory"
+                className="text-gray-700 hover:text-gray-900"
+              >
+                Directory
+              </Link>
+              <Link
+                href="/about"
+                className="text-gray-700 hover:text-gray-900"
+              >
+                About
+              </Link>
+              <Link
                 href="/profile"
                 className="text-gray-700 hover:text-gray-900"
               >

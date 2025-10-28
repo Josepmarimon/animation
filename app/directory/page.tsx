@@ -83,6 +83,12 @@ export default async function DirectoryPage({ searchParams }: DirectoryPageProps
               Anim a a a tion
             </Link>
             <div className="flex items-center space-x-4">
+              <Link
+                href="/about"
+                className="rounded-lg bg-white bg-opacity-20 backdrop-blur-sm px-5 py-2.5 text-sm font-medium text-white hover:bg-opacity-30 transition-all"
+              >
+                About
+              </Link>
               {user && (
                 <Link
                   href="/profile"
