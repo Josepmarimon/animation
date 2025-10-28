@@ -1,6 +1,7 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
+import Image from 'next/image'
 
 export default function InteractiveBackground() {
   const [isHovering, setIsHovering] = useState(false)
@@ -15,9 +16,23 @@ export default function InteractiveBackground() {
 
   return (
     <>
-      {/* Background Image with Hover */}
+      {/* Mobile: Image as element */}
+      <div className="absolute inset-0 sm:hidden flex items-center justify-center px-4 py-8">
+        <div className="relative w-full max-w-md opacity-70">
+          <Image
+            src="/demo-profiles/fondo.jpg"
+            alt="Vokabulantis"
+            width={800}
+            height={600}
+            className="w-full h-auto rounded-lg shadow-2xl"
+            priority
+          />
+        </div>
+      </div>
+
+      {/* Desktop: Background Image with Hover */}
       <div
-        className="absolute inset-0 bg-center bg-no-repeat opacity-70 cursor-help bg-[length:100%_auto] sm:bg-cover"
+        className="hidden sm:block absolute inset-0 bg-center bg-no-repeat opacity-70 cursor-help bg-cover"
         style={{ backgroundImage: 'url(/demo-profiles/fondo.jpg)' }}
         onMouseEnter={() => setIsHovering(true)}
         onMouseLeave={() => setIsHovering(false)}
@@ -27,10 +42,10 @@ export default function InteractiveBackground() {
       {/* Gradient Overlay */}
       <div className="absolute inset-0 bg-gradient-to-br from-blue-600/50 via-indigo-700/50 to-purple-800/50 pointer-events-none"></div>
 
-      {/* Popup that follows cursor */}
+      {/* Popup that follows cursor - Desktop only */}
       {isHovering && (
         <div
-          className="fixed z-50 pointer-events-none"
+          className="fixed z-50 pointer-events-none hidden sm:block"
           style={{
             left: `${mousePosition.x + 15}px`,
             top: `${mousePosition.y + 15}px`,
