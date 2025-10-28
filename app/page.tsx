@@ -112,19 +112,15 @@ export default async function Home() {
 
       {/* Hero Section - Full Screen */}
       <div className="relative z-10 flex items-center justify-center px-4 sm:px-6 lg:px-8" style={{ minHeight: 'calc(100vh - 5rem)' }}>
-        <div className="text-center max-w-4xl mx-auto">
-          <h2 className="text-3xl font-extrabold tracking-tight text-white sm:text-5xl md:text-6xl mb-6 animate-fade-in">
+        <div className="text-center max-w-3xl mx-auto">
+          <h2 className="text-2xl font-extrabold tracking-tight text-white sm:text-3xl md:text-4xl mb-8 animate-fade-in">
             Find and connect with
             <span className="block bg-gradient-to-r from-blue-200 to-purple-200 bg-clip-text text-transparent">
               animation professionals
             </span>
           </h2>
-          <p className="mt-6 text-base sm:text-lg leading-relaxed text-blue-100 max-w-2xl mx-auto">
-            Join the largest community of animation professionals.
-            Share your portfolio, find collaborators, and grow your network.
-          </p>
 
-          <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-6">
+          <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-6">
             {!user ? (
               <>
                 <Link

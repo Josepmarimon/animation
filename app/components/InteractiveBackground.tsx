@@ -17,7 +17,7 @@ export default function InteractiveBackground() {
     <>
       {/* Background Image with Hover */}
       <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-50 cursor-help"
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-70 cursor-help"
         style={{ backgroundImage: 'url(/demo-profiles/fondo.jpg)' }}
         onMouseEnter={() => setIsHovering(true)}
         onMouseLeave={() => setIsHovering(false)}
