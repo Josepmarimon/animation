@@ -18,14 +18,21 @@ export default async function AboutPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="relative min-h-screen bg-gradient-to-br from-blue-600 via-indigo-700 to-purple-800">
+      {/* Animated background elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-2000"></div>
+        <div className="absolute top-40 left-40 w-80 h-80 bg-indigo-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-4000"></div>
+      </div>
+
       {/* Navigation */}
-      <nav className="bg-white shadow-sm border-b border-gray-200">
+      <nav className="relative z-10 bg-white bg-opacity-10 backdrop-blur-md border-b border-white border-opacity-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
+          <div className="flex justify-between h-16 sm:h-20">
             {/* Logo - Responsive sizing */}
             <div className="flex items-center">
-              <Link href="/" className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent tracking-wider">
+              <Link href="/" className="text-2xl sm:text-4xl lg:text-6xl font-bold text-white tracking-wider">
                 Anim a a a tion
               </Link>
             </div>
@@ -34,31 +41,32 @@ export default async function AboutPage() {
             <div className="hidden lg:flex items-center space-x-4">
               <Link
                 href="/directory"
-                className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors"
+                className="rounded-lg bg-white bg-opacity-20 backdrop-blur-sm px-5 py-2.5 text-sm font-medium text-white hover:bg-opacity-30 transition-all"
               >
                 Directory
               </Link>
               <Link
                 href="/about"
-                className="px-4 py-2 text-sm font-medium text-blue-600 border-b-2 border-blue-600"
+                className="rounded-lg bg-white px-5 py-2.5 text-sm font-medium text-blue-700 hover:bg-gray-100 transition-all"
               >
                 About
               </Link>
               {user ? (
                 <Link
                   href="/profile"
-                  className="flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 shadow-md hover:shadow-lg transition-all overflow-hidden"
+                  className="flex items-center justify-center w-12 h-12 rounded-full bg-white bg-opacity-20 backdrop-blur-sm hover:bg-opacity-30 transition-all overflow-hidden border-2 border-white border-opacity-30"
+                  title="My Profile"
                 >
                   {userProfile?.avatar_url ? (
                     <Image
                       src={userProfile.avatar_url}
                       alt={userProfile.full_name || 'Profile'}
-                      width={40}
-                      height={40}
+                      width={48}
+                      height={48}
                       className="w-full h-full object-cover"
                     />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center text-white font-bold text-sm">
+                    <div className="w-full h-full flex items-center justify-center text-white font-bold text-lg">
                       {userProfile?.full_name?.charAt(0).toUpperCase() || user.email?.charAt(0).toUpperCase() || '?'}
                     </div>
                   )}
@@ -67,38 +75,36 @@ export default async function AboutPage() {
                 <>
                   <Link
                     href="/auth/login"
-                    className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors"
+                    className="rounded-lg bg-white bg-opacity-20 backdrop-blur-sm px-5 py-2.5 text-sm font-medium text-white hover:bg-opacity-30 transition-all"
                   >
-                    Sign In
+                    Log in
                   </Link>
                   <Link
                     href="/auth/signup"
-                    className="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 rounded-lg shadow-sm transition-all"
+                    className="rounded-lg bg-white px-5 py-2.5 text-sm font-medium text-blue-700 hover:bg-gray-100 transition-all shadow-lg"
                   >
-                    Get Started
+                    Sign up
                   </Link>
                 </>
               )}
             </div>
 
             {/* Mobile Menu - Visible on mobile */}
-            <div className="flex items-center lg:hidden">
-              <MobileMenu user={user} userProfile={userProfile} />
-            </div>
+            <MobileMenu user={user} userProfile={userProfile} />
           </div>
         </div>
       </nav>
 
       {/* Main Content */}
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <main className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         {/* Header */}
         <div className="text-center mb-16">
-          <h1 className="text-5xl font-bold text-gray-900 mb-4">About Us</h1>
-          <div className="w-24 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto"></div>
+          <h1 className="text-5xl font-bold text-white mb-4">About Us</h1>
+          <div className="w-24 h-1 bg-white bg-opacity-50 mx-auto"></div>
         </div>
 
         {/* Founder Section */}
-        <div className="bg-white">
+        <div className="bg-white bg-opacity-10 backdrop-blur-md border border-white border-opacity-20 rounded-2xl shadow-2xl overflow-hidden p-8 sm:p-12">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
             {/* Photo */}
             <div className="relative aspect-square w-full max-w-md mx-auto overflow-hidden shadow-lg">
@@ -113,10 +119,10 @@ export default async function AboutPage() {
             {/* Content */}
             <div className="space-y-6">
               <div>
-                <h2 className="text-3xl font-bold text-gray-900 mb-2">Frank Maria</h2>
-                <p className="text-xl text-gray-600 mb-6">Founder & Director</p>
+                <h2 className="text-3xl font-bold text-white mb-2">Frank Maria</h2>
+                <p className="text-xl text-blue-100 mb-6">Founder & Director</p>
 
-                <div className="prose prose-lg text-gray-700 space-y-4">
+                <div className="prose prose-lg text-white space-y-4">
                   <p>
                     Dr. Frank Maria is a distinguished animator and educator with decades of experience in stop motion animation. He serves as Coordinator of the Stop Motion Animation Master's program and the Audiovisual Design Department at BAU, Centro Universitario de Artes y Diseño.
                   </p>
@@ -126,9 +132,9 @@ export default async function AboutPage() {
                   </p>
                 </div>
 
-                <div className="mt-8 pt-6 border-t border-gray-200">
-                  <h3 className="text-sm font-semibold text-gray-900 mb-3">Credentials</h3>
-                  <ul className="space-y-2 text-sm text-gray-700">
+                <div className="mt-8 pt-6 border-t border-white border-opacity-20">
+                  <h3 className="text-sm font-semibold text-white mb-3">Credentials</h3>
+                  <ul className="space-y-2 text-sm text-blue-100">
                     <li>• Doctorate in Audiovisual Mediation, BAU</li>
                     <li>• Master's in Fiction & Film Direction, Blanquerna</li>
                     <li>• Coordinator, Stop Motion Animation Master's Program</li>
@@ -141,7 +147,7 @@ export default async function AboutPage() {
                     href="http://www.mediacionaudiovisual.com"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium"
+                    className="inline-flex items-center text-blue-200 hover:text-blue-100 font-medium"
                   >
                     www.mediacionaudiovisual.com
                     <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -155,13 +161,13 @@ export default async function AboutPage() {
         </div>
 
         {/* Technical Partnership */}
-        <div className="mt-20 border-t border-gray-200 pt-20">
+        <div className="mt-20 border-t border-white border-opacity-20 pt-20">
           <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Technical Partnership</h2>
-            <div className="w-24 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto"></div>
+            <h2 className="text-4xl font-bold text-white mb-4">Technical Partnership</h2>
+            <div className="w-24 h-1 bg-white bg-opacity-50 mx-auto"></div>
           </div>
 
-          <div className="bg-white border border-gray-200 rounded-lg p-12 shadow-sm">
+          <div className="bg-white bg-opacity-10 backdrop-blur-md border border-white border-opacity-20 rounded-2xl shadow-2xl p-12">
             <div className="flex flex-col md:flex-row items-center gap-8">
               {/* Logo */}
               <div className="flex-shrink-0">
@@ -171,7 +177,7 @@ export default async function AboutPage() {
                   rel="noopener noreferrer"
                   className="block hover:opacity-80 transition-opacity"
                 >
-                  <div className="relative w-48 h-48">
+                  <div className="relative w-48 h-48 bg-white rounded-lg p-4">
                     <Image
                       src="/demo-profiles/logo_creatica.png"
                       alt="Estudi Creàtica"
@@ -184,15 +190,15 @@ export default async function AboutPage() {
 
               {/* Content */}
               <div className="flex-1 text-center md:text-left">
-                <h3 className="text-2xl font-bold text-gray-900 mb-3">Estudi Creàtica</h3>
-                <p className="text-lg text-gray-700 mb-4">
+                <h3 className="text-2xl font-bold text-white mb-3">Estudi Creàtica</h3>
+                <p className="text-lg text-blue-100 mb-4">
                   Communications agency specialized in the use of AI in different media production processes.
                 </p>
                 <a
                   href="https://www.estudicreatica.cat/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium"
+                  className="inline-flex items-center text-blue-200 hover:text-blue-100 font-medium"
                 >
                   www.estudicreatica.cat
                   <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -205,9 +211,9 @@ export default async function AboutPage() {
         </div>
 
         {/* Mission Statement */}
-        <div className="mt-20 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-12 text-center">
-          <h3 className="text-2xl font-bold text-gray-900 mb-4">Our Mission</h3>
-          <p className="text-lg text-gray-700 max-w-3xl mx-auto">
+        <div className="mt-20 bg-white bg-opacity-10 backdrop-blur-md border border-white border-opacity-20 rounded-2xl shadow-2xl p-12 text-center">
+          <h3 className="text-2xl font-bold text-white mb-4">Our Mission</h3>
+          <p className="text-lg text-blue-100 max-w-3xl mx-auto">
             Anim a a a tion connects animation professionals worldwide, providing a platform to showcase portfolios, discover talent, and build meaningful collaborations within the global animation community.
           </p>
         </div>
