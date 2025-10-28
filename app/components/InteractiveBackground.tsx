@@ -39,8 +39,8 @@ export default function InteractiveBackground() {
         onMouseMove={handleMouseMove}
       ></div>
 
-      {/* Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-600/50 via-indigo-700/50 to-purple-800/50 pointer-events-none z-[2]"></div>
+      {/* Gradient Overlay - Hidden on mobile to show image clearly */}
+      <div className="hidden sm:block absolute inset-0 bg-gradient-to-br from-blue-600/50 via-indigo-700/50 to-purple-800/50 pointer-events-none z-[2]"></div>
 
       {/* Popup that follows cursor - Desktop only */}
       {isHovering && (
