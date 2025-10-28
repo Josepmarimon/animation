@@ -17,44 +17,44 @@ export default async function AboutPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
+    <div className="min-h-screen bg-white">
       {/* Navigation */}
-      <nav className="backdrop-blur-md bg-white bg-opacity-70 shadow-sm border-b border-white border-opacity-20">
+      <nav className="bg-white shadow-sm border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             <div className="flex items-center">
-              <Link href="/" className="text-6xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent tracking-wider">
+              <Link href="/" className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent tracking-wider">
                 Anim a a a tion
               </Link>
             </div>
             <div className="flex items-center space-x-4">
               <Link
                 href="/directory"
-                className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 backdrop-blur-sm bg-white bg-opacity-50 rounded-lg border border-white border-opacity-50 hover:bg-opacity-70 transition-all"
+                className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors"
               >
                 Directory
               </Link>
               <Link
                 href="/about"
-                className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 backdrop-blur-sm bg-white bg-opacity-50 rounded-lg border border-white border-opacity-50 hover:bg-opacity-70 transition-all"
+                className="px-4 py-2 text-sm font-medium text-blue-600 border-b-2 border-blue-600"
               >
                 About
               </Link>
               {user ? (
                 <Link
                   href="/profile"
-                  className="flex items-center justify-center w-12 h-12 rounded-full backdrop-blur-md bg-gradient-to-br from-blue-500 to-purple-600 shadow-lg hover:shadow-xl transition-all border-2 border-white border-opacity-20 overflow-hidden"
+                  className="flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 shadow-md hover:shadow-lg transition-all overflow-hidden"
                 >
                   {userProfile?.avatar_url ? (
                     <Image
                       src={userProfile.avatar_url}
                       alt={userProfile.full_name || 'Profile'}
-                      width={48}
-                      height={48}
+                      width={40}
+                      height={40}
                       className="w-full h-full object-cover"
                     />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center text-white font-bold text-lg">
+                    <div className="w-full h-full flex items-center justify-center text-white font-bold text-sm">
                       {userProfile?.full_name?.charAt(0).toUpperCase() || user.email?.charAt(0).toUpperCase() || '?'}
                     </div>
                   )}
@@ -63,13 +63,13 @@ export default async function AboutPage() {
                 <>
                   <Link
                     href="/auth/login"
-                    className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 backdrop-blur-sm bg-white bg-opacity-50 rounded-lg border border-white border-opacity-50 hover:bg-opacity-70 transition-all"
+                    className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors"
                   >
                     Sign In
                   </Link>
                   <Link
                     href="/auth/signup"
-                    className="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 rounded-lg shadow-md hover:shadow-lg transition-all"
+                    className="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 rounded-lg shadow-sm transition-all"
                   >
                     Get Started
                   </Link>
@@ -81,75 +81,76 @@ export default async function AboutPage() {
       </nav>
 
       {/* Main Content */}
-      <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="backdrop-blur-md bg-white bg-opacity-70 rounded-2xl shadow-xl border border-white border-opacity-20 overflow-hidden">
-          {/* Header */}
-          <div className="bg-gradient-to-r from-blue-600 to-purple-600 px-8 py-12 text-center">
-            <h1 className="text-4xl font-extrabold text-white mb-2">About Us</h1>
-            <p className="text-blue-100 text-lg">Meet the creator of Anim a a a tion</p>
-          </div>
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        {/* Header */}
+        <div className="text-center mb-16">
+          <h1 className="text-5xl font-bold text-gray-900 mb-4">About Us</h1>
+          <div className="w-24 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto"></div>
+        </div>
 
-          {/* Profile Section */}
-          <div className="px-8 py-12">
-            <div className="flex flex-col items-center mb-8">
-              <div className="relative w-48 h-48 rounded-full overflow-hidden shadow-2xl border-4 border-white mb-6">
-                <Image
-                  src="/demo-profiles/frank.jpeg"
-                  alt="Frank Maria"
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-2">Frank Maria</h2>
-              <p className="text-lg text-purple-600 font-medium mb-4">Platform Creator & Stop Motion Master</p>
-              <a
-                href="http://www.mediacionaudiovisual.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-600 hover:text-blue-700 transition-colors"
-              >
-                www.mediacionaudiovisual.com
-              </a>
+        {/* Founder Section */}
+        <div className="bg-white">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
+            {/* Photo */}
+            <div className="relative aspect-square w-full max-w-md mx-auto overflow-hidden shadow-lg">
+              <Image
+                src="/demo-profiles/frank.jpeg"
+                alt="Frank Maria"
+                fill
+                className="object-cover"
+              />
             </div>
 
-            {/* Bio */}
-            <div className="prose prose-lg max-w-none space-y-6 text-gray-700">
-              <p className="text-xl leading-relaxed">
-                Dr. Frank Maria is a distinguished animator, educator, and coordinator who has dedicated decades to the art and pedagogy of stop motion animation. As the Coordinator of the Stop Motion Animation Master's program and the Audiovisual Design Department at BAU, he has shaped the next generation of animation professionals through his extensive expertise and passion for the craft.
-              </p>
+            {/* Content */}
+            <div className="space-y-6">
+              <div>
+                <h2 className="text-3xl font-bold text-gray-900 mb-2">Frank Maria</h2>
+                <p className="text-xl text-gray-600 mb-6">Founder & Director</p>
 
-              <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-6 my-8">
-                <h3 className="text-2xl font-bold text-gray-900 mb-4">Professional Journey</h3>
-                <p className="leading-relaxed">
-                  Frank's animation career began in 1996 with specialized training at the Faculty of Art Media and Design in Bristol, England. After completing his Fine Arts degree specializing in Image, he joined CINENIC, a production company dedicated to stop motion animation, where he animated the children's series "KOKI"—13 episodes of clay animation sold to 26 countries—and numerous television commercials using various stop motion techniques.
-                </p>
-              </div>
+                <div className="prose prose-lg text-gray-700 space-y-4">
+                  <p>
+                    Dr. Frank Maria is a distinguished animator and educator with decades of experience in stop motion animation. He serves as Coordinator of the Stop Motion Animation Master's program and the Audiovisual Design Department at BAU, Centro Universitario de Artes y Diseño.
+                  </p>
 
-              <p className="leading-relaxed">
-                From 2002 to 2006, Frank served as Academic Director of 9zeros, the Center for Animation Techniques Studies of Catalunya, where he participated in "Teaching with Animation," a training program funded by the European Union's Media programme. As director of Animaldía production company, he created various bumpers and opening sequences for TV3, including notable works for the cultural program "Anima" and the Christmas promotion "Aquí és Nadal i estic content."
-              </p>
+                  <p>
+                    His career includes directing the acclaimed children's series "KOKI" (sold to 26 countries), leading the 9zeros animation center, and creating award-winning work for TV3. He holds a Doctorate in Audiovisual Mediation and continues to shape the next generation of animation professionals.
+                  </p>
+                </div>
 
-              <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-6 my-8">
-                <h3 className="text-2xl font-bold text-gray-900 mb-4">Academic Excellence</h3>
-                <p className="leading-relaxed mb-4">
-                  Dr. Maria holds a Doctorate from BAU's Doctoral School, focusing on Audiovisual Mediation in university environments, along with an Official Master's in Fiction, Screenwriting, and Film and TV Direction from Blanquerna, and a Fine Arts degree from the University of Barcelona.
-                </p>
-                <p className="leading-relaxed">
-                  As an educator, he has taught various animation techniques—including clay animation, cut-out, sand, and glass painting—as well as cinematographic language and storyboarding at institutions such as TV3, SGAE, MACBA, festivals, civic centers, and the Youth Department of Tarragona.
-                </p>
-              </div>
+                <div className="mt-8 pt-6 border-t border-gray-200">
+                  <h3 className="text-sm font-semibold text-gray-900 mb-3">Credentials</h3>
+                  <ul className="space-y-2 text-sm text-gray-700">
+                    <li>• Doctorate in Audiovisual Mediation, BAU</li>
+                    <li>• Master's in Fiction & Film Direction, Blanquerna</li>
+                    <li>• Coordinator, Stop Motion Animation Master's Program</li>
+                    <li>• Laus Silver Award Winner (2010)</li>
+                  </ul>
+                </div>
 
-              <p className="leading-relaxed">
-                His contributions to the field extend beyond the classroom through conferences on animation at educational centers worldwide, publications on the social responsibility of audiovisual designers, and recognition including a Laus Silver award for the opening sequence of TV3's cultural program "Anima" in 2010.
-              </p>
-
-              <div className="bg-blue-50 rounded-lg p-6 mt-8">
-                <p className="text-lg font-semibold text-gray-900 italic text-center">
-                  "Through Anim a a a tion, Frank Maria continues his mission to connect, showcase, and empower animation professionals worldwide, creating a vibrant community where artists can share their work, find collaborators, and grow together."
-                </p>
+                <div className="mt-6">
+                  <a
+                    href="http://www.mediacionaudiovisual.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium"
+                  >
+                    www.mediacionaudiovisual.com
+                    <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    </svg>
+                  </a>
+                </div>
               </div>
             </div>
           </div>
+        </div>
+
+        {/* Mission Statement */}
+        <div className="mt-20 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-12 text-center">
+          <h3 className="text-2xl font-bold text-gray-900 mb-4">Our Mission</h3>
+          <p className="text-lg text-gray-700 max-w-3xl mx-auto">
+            Anim a a a tion connects animation professionals worldwide, providing a platform to showcase portfolios, discover talent, and build meaningful collaborations within the global animation community.
+          </p>
         </div>
       </main>
     </div>
