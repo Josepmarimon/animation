@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
 import Image from 'next/image'
 import MobileMenu from '@/app/components/MobileMenu'
+import AnimatedLogo from '@/app/components/AnimatedLogo'
 
 export default async function AboutPage() {
   const supabase = await createClient()
@@ -32,9 +33,7 @@ export default async function AboutPage() {
           <div className="flex justify-between h-16 sm:h-20">
             {/* Logo - Responsive sizing */}
             <div className="flex items-center">
-              <Link href="/" className="text-2xl sm:text-4xl lg:text-6xl font-bold text-white tracking-wider">
-                Anim a a a tion
-              </Link>
+              <AnimatedLogo />
             </div>
 
             {/* Desktop Navigation - Hidden on mobile */}

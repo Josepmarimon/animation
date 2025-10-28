@@ -7,6 +7,7 @@ import Link from 'next/link'
 import AvatarUpload from '@/app/components/AvatarUpload'
 import PortfolioUpload from '@/app/components/PortfolioUpload'
 import MobileMenu from '@/app/components/MobileMenu'
+import AnimatedLogo from '@/app/components/AnimatedLogo'
 
 const SPECIALIZATIONS = [
   { value: '2d_animation', label: '2D Animation' },
@@ -222,9 +223,11 @@ export default function EditProfilePage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 justify-between items-center">
             {/* Logo - Responsive sizing */}
-            <Link href="/" className="text-2xl sm:text-3xl lg:text-5xl font-bold text-gray-900 tracking-wider">
-              Anim a a a tion
-            </Link>
+            <AnimatedLogo
+              className="text-3xl sm:text-4xl lg:text-6xl font-bold tracking-wider"
+              textColor="text-gray-900"
+              darkColor="text-white"
+            />
 
             {/* Desktop Navigation - Hidden on mobile */}
             <div className="hidden lg:flex items-center space-x-4">

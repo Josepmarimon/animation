@@ -16,18 +16,15 @@ export default function InteractiveBackground() {
 
   return (
     <>
-      {/* Mobile: Image as element */}
-      <div className="absolute inset-0 sm:hidden flex items-center justify-center px-4 py-8 z-[1]">
-        <div className="relative w-full max-w-md opacity-70">
-          <Image
-            src="/demo-profiles/fondo.jpg"
-            alt="Vokabulantis"
-            width={800}
-            height={600}
-            className="w-full h-auto rounded-lg shadow-2xl"
-            priority
-          />
-        </div>
+      {/* Mobile: Image as background */}
+      <div className="absolute top-0 left-0 w-full h-screen sm:hidden z-[1]">
+        <Image
+          src="/demo-profiles/fondo.jpg"
+          alt="Vokabulantis"
+          fill
+          className="object-cover opacity-80"
+          priority
+        />
       </div>
 
       {/* Desktop: Background Image with Hover */}
