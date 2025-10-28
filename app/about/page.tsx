@@ -94,7 +94,7 @@ export default async function AboutPage() {
             <div className="flex flex-col items-center mb-8">
               <div className="relative w-48 h-48 rounded-full overflow-hidden shadow-2xl border-4 border-white mb-6">
                 <Image
-                  src="https://www.baued.es/uploads/media/default/0001/18/de3f802649df8d1bec9e5149431222e591b7ef2b.jpeg"
+                  src="/demo-profiles/frank.jpeg"
                   alt="Frank Maria"
                   fill
                   className="object-cover"
