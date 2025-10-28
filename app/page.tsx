@@ -70,6 +70,12 @@ export default async function Home() {
                     Directory
                   </Link>
                   <Link
+                    href="/about"
+                    className="rounded-lg bg-white bg-opacity-20 backdrop-blur-sm px-5 py-2.5 text-sm font-medium text-white hover:bg-opacity-30 transition-all"
+                  >
+                    About
+                  </Link>
+                  <Link
                     href="/profile"
                     className="flex items-center justify-center w-12 h-12 rounded-full bg-white bg-opacity-20 backdrop-blur-sm hover:bg-opacity-30 transition-all overflow-hidden border-2 border-white border-opacity-30"
                     title="My Profile"
@@ -91,6 +97,12 @@ export default async function Home() {
                 </>
               ) : (
                 <>
+                  <Link
+                    href="/about"
+                    className="rounded-lg bg-white bg-opacity-20 backdrop-blur-sm px-5 py-2.5 text-sm font-medium text-white hover:bg-opacity-30 transition-all"
+                  >
+                    About
+                  </Link>
                   <Link
                     href="/auth/login"
                     className="rounded-lg bg-white bg-opacity-20 backdrop-blur-sm px-5 py-2.5 text-sm font-medium text-white hover:bg-opacity-30 transition-all"
