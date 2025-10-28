@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
+import MobileMenu from '@/app/components/MobileMenu'
 
 // Helper function to format specialization names
 function formatSpecialization(spec: string): string {
@@ -125,11 +126,14 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
       {/* Navigation */}
       <nav className="relative z-10 bg-white bg-opacity-10 backdrop-blur-md border-b border-white border-opacity-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex h-20 justify-between items-center">
-            <Link href="/" className="text-6xl font-bold text-white tracking-wider">
+          <div className="flex h-16 sm:h-20 justify-between items-center">
+            {/* Logo - Responsive sizing */}
+            <Link href="/" className="text-2xl sm:text-4xl lg:text-6xl font-bold text-white tracking-wider">
               Anim a a a tion
             </Link>
-            <div className="flex items-center space-x-4">
+
+            {/* Desktop Navigation - Hidden on mobile */}
+            <div className="hidden lg:flex items-center space-x-4">
               <Link
                 href="/directory"
                 className="rounded-lg bg-white bg-opacity-20 backdrop-blur-sm px-5 py-2.5 text-sm font-medium text-white hover:bg-opacity-30 transition-all"
@@ -164,6 +168,9 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
                 </Link>
               )}
             </div>
+
+            {/* Mobile Menu - Visible on mobile */}
+            <MobileMenu user={user} userProfile={userProfile} />
           </div>
         </div>
       </nav>

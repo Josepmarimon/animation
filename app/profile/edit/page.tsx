@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import AvatarUpload from '@/app/components/AvatarUpload'
 import PortfolioUpload from '@/app/components/PortfolioUpload'
+import MobileMenu from '@/app/components/MobileMenu'
 
 const SPECIALIZATIONS = [
   { value: '2d_animation', label: '2D Animation' },
@@ -49,6 +50,8 @@ export default function EditProfilePage() {
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
   const [userId, setUserId] = useState<string>('')
+  const [user, setUser] = useState<any>(null)
+  const [userProfile, setUserProfile] = useState<{ avatar_url?: string, full_name?: string } | null>(null)
 
   // Basic info
   const [fullName, setFullName] = useState('')
@@ -81,6 +84,7 @@ export default function EditProfilePage() {
       }
 
       setUserId(user.id)
+      setUser(user)
 
       const { data: profile, error } = await supabase
         .from('profiles')
@@ -95,6 +99,12 @@ export default function EditProfilePage() {
       }
 
       if (profile) {
+        // Set user profile for mobile menu
+        setUserProfile({
+          avatar_url: profile.avatar_url,
+          full_name: profile.full_name
+        })
+
         // Basic info
         setFullName(profile.full_name || '')
         setCountry(profile.country || '')
@@ -211,10 +221,13 @@ export default function EditProfilePage() {
       <nav className="bg-white shadow-sm">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 justify-between items-center">
-            <Link href="/" className="text-5xl font-bold text-gray-900 tracking-wider">
+            {/* Logo - Responsive sizing */}
+            <Link href="/" className="text-2xl sm:text-3xl lg:text-5xl font-bold text-gray-900 tracking-wider">
               Anim a a a tion
             </Link>
-            <div className="flex items-center space-x-4">
+
+            {/* Desktop Navigation - Hidden on mobile */}
+            <div className="hidden lg:flex items-center space-x-4">
               <Link
                 href="/directory"
                 className="text-gray-700 hover:text-gray-900"
@@ -233,6 +246,11 @@ export default function EditProfilePage() {
               >
                 Back to Profile
               </Link>
+            </div>
+
+            {/* Mobile Menu - Visible on mobile */}
+            <div className="flex items-center lg:hidden">
+              <MobileMenu user={user} userProfile={userProfile} />
             </div>
           </div>
         </div>

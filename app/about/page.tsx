@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
 import Image from 'next/image'
+import MobileMenu from '@/app/components/MobileMenu'
 
 export default async function AboutPage() {
   const supabase = await createClient()
@@ -22,12 +23,15 @@ export default async function AboutPage() {
       <nav className="bg-white shadow-sm border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
+            {/* Logo - Responsive sizing */}
             <div className="flex items-center">
-              <Link href="/" className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent tracking-wider">
+              <Link href="/" className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent tracking-wider">
                 Anim a a a tion
               </Link>
             </div>
-            <div className="flex items-center space-x-4">
+
+            {/* Desktop Navigation - Hidden on mobile */}
+            <div className="hidden lg:flex items-center space-x-4">
               <Link
                 href="/directory"
                 className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors"
@@ -75,6 +79,11 @@ export default async function AboutPage() {
                   </Link>
                 </>
               )}
+            </div>
+
+            {/* Mobile Menu - Visible on mobile */}
+            <div className="flex items-center lg:hidden">
+              <MobileMenu user={user} userProfile={userProfile} />
             </div>
           </div>
         </div>
