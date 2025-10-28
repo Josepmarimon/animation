@@ -17,7 +17,7 @@ export default function InteractiveBackground() {
   return (
     <>
       {/* Mobile: Image as element */}
-      <div className="absolute inset-0 sm:hidden flex items-center justify-center px-4 py-8">
+      <div className="absolute inset-0 sm:hidden flex items-center justify-center px-4 py-8 z-[1]">
         <div className="relative w-full max-w-md opacity-70">
           <Image
             src="/demo-profiles/fondo.jpg"
@@ -32,7 +32,7 @@ export default function InteractiveBackground() {
 
       {/* Desktop: Background Image with Hover */}
       <div
-        className="hidden sm:block absolute inset-0 bg-center bg-no-repeat opacity-70 cursor-help bg-cover"
+        className="hidden sm:block absolute inset-0 bg-center bg-no-repeat opacity-70 cursor-help bg-cover z-[1]"
         style={{ backgroundImage: 'url(/demo-profiles/fondo.jpg)' }}
         onMouseEnter={() => setIsHovering(true)}
         onMouseLeave={() => setIsHovering(false)}
@@ -40,7 +40,7 @@ export default function InteractiveBackground() {
       ></div>
 
       {/* Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-600/50 via-indigo-700/50 to-purple-800/50 pointer-events-none"></div>
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-600/50 via-indigo-700/50 to-purple-800/50 pointer-events-none z-[2]"></div>
 
       {/* Popup that follows cursor - Desktop only */}
       {isHovering && (
