@@ -1,6 +1,7 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { createPortal } from 'react-dom'
 import Link from 'next/link'
 import Image from 'next/image'
 
@@ -14,38 +15,22 @@ interface MobileMenuProps {
 
 export default function MobileMenu({ user, userProfile }: MobileMenuProps) {
   const [isOpen, setIsOpen] = useState(false)
+  const [mounted, setMounted] = useState(false)
 
-  return (
-    <>
-      {/* Hamburger Button */}
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="lg:hidden inline-flex items-center justify-center p-2 rounded-md text-white hover:bg-white hover:bg-opacity-20 transition-all"
-        aria-expanded={isOpen}
-      >
-        <span className="sr-only">Open main menu</span>
-        {!isOpen ? (
-          <svg className="block h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-          </svg>
-        ) : (
-          <svg className="block h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        )}
-      </button>
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
-      {/* Mobile Menu Overlay */}
-      {isOpen && (
+  const menuContent = isOpen ? (
         <div className="lg:hidden fixed inset-0 z-[9999]">
           {/* Backdrop */}
           <div
-            className="absolute inset-0 bg-black bg-opacity-50 backdrop-blur-sm"
+            className="absolute inset-0 bg-black bg-opacity-50 backdrop-blur-sm z-[9998]"
             onClick={() => setIsOpen(false)}
           />
 
           {/* Menu Panel */}
-          <div className="absolute top-0 right-0 h-full w-64 bg-gradient-to-br from-blue-600 via-indigo-700 to-purple-800 shadow-xl">
+          <div className="absolute top-0 right-0 h-full w-64 bg-gradient-to-br from-blue-600 via-indigo-700 to-purple-800 shadow-xl z-[9999]">
             <div className="flex flex-col h-full">
               {/* Close Button */}
               <div className="flex justify-end p-4">
@@ -132,7 +117,30 @@ export default function MobileMenu({ user, userProfile }: MobileMenuProps) {
             </div>
           </div>
         </div>
-      )}
+  ) : null
+
+  return (
+    <>
+      {/* Hamburger Button */}
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="lg:hidden inline-flex items-center justify-center p-2 rounded-md text-white hover:bg-white hover:bg-opacity-20 transition-all"
+        aria-expanded={isOpen}
+      >
+        <span className="sr-only">Open main menu</span>
+        {!isOpen ? (
+          <svg className="block h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+          </svg>
+        ) : (
+          <svg className="block h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        )}
+      </button>
+
+      {/* Portal for Menu Overlay */}
+      {mounted && menuContent && createPortal(menuContent, document.body)}
     </>
   )
 }
