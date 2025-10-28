@@ -145,6 +145,56 @@ export default async function AboutPage() {
           </div>
         </div>
 
+        {/* Technical Partnership */}
+        <div className="mt-20 border-t border-gray-200 pt-20">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">Technical Partnership</h2>
+            <div className="w-24 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto"></div>
+          </div>
+
+          <div className="bg-white border border-gray-200 rounded-lg p-12 shadow-sm">
+            <div className="flex flex-col md:flex-row items-center gap-8">
+              {/* Logo */}
+              <div className="flex-shrink-0">
+                <a
+                  href="https://www.estudicreatica.cat/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block hover:opacity-80 transition-opacity"
+                >
+                  <div className="relative w-48 h-48">
+                    <Image
+                      src="/demo-profiles/logo_creatica.png"
+                      alt="Estudi Creàtica"
+                      fill
+                      className="object-contain"
+                    />
+                  </div>
+                </a>
+              </div>
+
+              {/* Content */}
+              <div className="flex-1 text-center md:text-left">
+                <h3 className="text-2xl font-bold text-gray-900 mb-3">Estudi Creàtica</h3>
+                <p className="text-lg text-gray-700 mb-4">
+                  Communications agency specialized in the use of AI in different media production processes.
+                </p>
+                <a
+                  href="https://www.estudicreatica.cat/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium"
+                >
+                  www.estudicreatica.cat
+                  <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Mission Statement */}
         <div className="mt-20 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-12 text-center">
           <h3 className="text-2xl font-bold text-gray-900 mb-4">Our Mission</h3>
