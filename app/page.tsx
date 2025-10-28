@@ -132,27 +132,27 @@ export default async function Home() {
       </nav>
 
       {/* Hero Section - Full Screen */}
-      <div className="relative z-10 flex items-center justify-center px-4 sm:px-6 lg:px-8" style={{ minHeight: 'calc(100vh - 5rem)' }}>
+      <div className="relative z-10 flex items-center justify-center px-4 sm:px-6 lg:px-8 pt-12 sm:pt-0" style={{ minHeight: 'calc(100vh - 4rem)' }}>
         <div className="text-center max-w-3xl mx-auto">
-          <h2 className="text-2xl font-extrabold tracking-tight text-white sm:text-3xl md:text-4xl mb-8 animate-fade-in">
+          <h2 className="text-xl font-extrabold tracking-tight text-white sm:text-3xl md:text-4xl mb-6 sm:mb-8 animate-fade-in">
             Find and connect with
             <span className="block bg-gradient-to-r from-blue-200 to-purple-200 bg-clip-text text-transparent">
               animation professionals
             </span>
           </h2>
 
-          <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-6">
+          <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
             {!user ? (
               <>
                 <Link
                   href="/auth/signup"
-                  className="w-full sm:w-auto rounded-xl bg-white px-10 py-5 text-lg font-semibold text-blue-700 shadow-2xl hover:bg-gray-100 hover:scale-105 transform transition-all duration-200"
+                  className="w-full sm:w-auto rounded-xl bg-white px-8 py-4 sm:px-10 sm:py-5 text-base sm:text-lg font-semibold text-blue-700 shadow-2xl hover:bg-gray-100 hover:scale-105 transform transition-all duration-200"
                 >
                   Get started free
                 </Link>
                 <Link
                   href="/directory"
-                  className="w-full sm:w-auto rounded-xl bg-white bg-opacity-20 backdrop-blur-sm px-10 py-5 text-lg font-semibold text-white hover:bg-opacity-30 transform hover:scale-105 transition-all duration-200"
+                  className="w-full sm:w-auto rounded-xl bg-white bg-opacity-20 backdrop-blur-sm px-8 py-4 sm:px-10 sm:py-5 text-base sm:text-lg font-semibold text-white hover:bg-opacity-30 transform hover:scale-105 transition-all duration-200"
                 >
                   Browse directory →
                 </Link>
@@ -160,7 +160,7 @@ export default async function Home() {
             ) : (
               <Link
                 href="/directory"
-                className="w-full sm:w-auto rounded-xl bg-white px-10 py-5 text-lg font-semibold text-blue-700 shadow-2xl hover:bg-gray-100 hover:scale-105 transform transition-all duration-200"
+                className="w-full sm:w-auto rounded-xl bg-white px-8 py-4 sm:px-10 sm:py-5 text-base sm:text-lg font-semibold text-blue-700 shadow-2xl hover:bg-gray-100 hover:scale-105 transform transition-all duration-200"
               >
                 Browse directory →
               </Link>
@@ -168,7 +168,7 @@ export default async function Home() {
           </div>
 
           {/* Feature highlights */}
-          <div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+          <div className="mt-12 sm:mt-20 grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 max-w-4xl mx-auto">
             <div className="bg-white bg-opacity-10 backdrop-blur-md rounded-2xl p-6 border border-white border-opacity-20">
               <div className="flex justify-center mb-4">
                 <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-white bg-opacity-20">

@@ -37,7 +37,7 @@ export default function MobileMenu({ user, userProfile }: MobileMenuProps) {
 
       {/* Mobile Menu Overlay */}
       {isOpen && (
-        <div className="lg:hidden fixed inset-0 z-50">
+        <div className="lg:hidden fixed inset-0 z-[9999]">
           {/* Backdrop */}
           <div
             className="absolute inset-0 bg-black bg-opacity-50 backdrop-blur-sm"
