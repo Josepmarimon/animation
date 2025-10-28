@@ -1,10 +1,9 @@
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
-import { cookies } from 'next/headers'
+import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
 import Image from 'next/image'
 
 export default async function AboutPage() {
-  const supabase = createServerComponentClient({ cookies })
+  const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
   let userProfile = null
