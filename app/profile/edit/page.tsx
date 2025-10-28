@@ -211,8 +211,8 @@ export default function EditProfilePage() {
       <nav className="bg-white shadow-sm">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 justify-between items-center">
-            <Link href="/" className="text-xl font-bold text-gray-900">
-              Animation Directory
+            <Link href="/" className="text-5xl font-bold text-gray-900 tracking-wider">
+              Anim a a a tion
             </Link>
             <div className="flex items-center space-x-4">
               <Link

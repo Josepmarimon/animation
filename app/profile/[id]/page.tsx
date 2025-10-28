@@ -126,8 +126,8 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
       <nav className="relative z-10 bg-white bg-opacity-10 backdrop-blur-md border-b border-white border-opacity-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-20 justify-between items-center">
-            <Link href="/" className="text-2xl font-bold text-white">
-              Animation Directory
+            <Link href="/" className="text-6xl font-bold text-white tracking-wider">
+              Anim a a a tion
             </Link>
             <div className="flex items-center space-x-4">
               <Link
