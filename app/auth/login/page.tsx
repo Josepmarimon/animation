@@ -43,8 +43,8 @@ export default function LoginPage() {
 
       {/* Home Link */}
       <div className="absolute top-8 left-8 z-10">
-        <Link href="/" className="text-2xl font-bold text-white hover:text-blue-100 transition-colors">
-          Animation Directory
+        <Link href="/" className="text-6xl font-bold text-white hover:text-blue-100 transition-colors tracking-wider">
+          Anim a a a tion
         </Link>
       </div>
 

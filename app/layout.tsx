@@ -5,8 +5,8 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Directorio de Profesionales de Animación",
-  description: "Plataforma para profesionales de animación",
+  title: "Anim a a a tion",
+  description: "Platform for animation professionals",
 };
 
 export default function RootLayout({

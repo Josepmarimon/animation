@@ -56,8 +56,8 @@ export default async function Home() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-20 justify-between items-center">
             <div className="flex items-center">
-              <h1 className="text-2xl font-bold text-white">
-                Animation Directory
+              <h1 className="text-6xl font-bold text-white tracking-wider">
+                Anim a a a tion
               </h1>
             </div>
             <div className="flex items-center space-x-4">
