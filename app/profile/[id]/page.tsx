@@ -316,7 +316,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
               </div>
             )}
 
-            {/* Video Showcase Section */}
+            {/* Video Showreel Section */}
             {(contactInfo.youtube || contactInfo.vimeo) && (() => {
               const hasYoutube = contactInfo.youtube && getYouTubeEmbedUrl(contactInfo.youtube)
               const hasVimeo = contactInfo.vimeo && getVimeoEmbedUrl(contactInfo.vimeo)
@@ -324,7 +324,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
 
               return (
                 <div className="bg-white shadow rounded-lg p-6 mb-6">
-                  <h2 className="text-xl font-bold text-gray-900 mb-6">Video Showcase</h2>
+                  <h2 className="text-xl font-bold text-gray-900 mb-6">Video Showreel</h2>
                   <div className={`grid gap-6 ${videoCount === 2 ? 'grid-cols-1 md:grid-cols-2' : 'grid-cols-1'}`}>
                     {hasYoutube && (
                       <div className="space-y-2">
