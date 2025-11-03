@@ -23,7 +23,7 @@ interface Post {
   profiles: {
     full_name: string
     avatar_url: string | null
-  }
+  } | null
 }
 
 export default function PostDetailPage() {
