@@ -72,7 +72,7 @@ export default function PostDetailPage() {
           created_at,
           user_id,
           wall_id,
-          profiles:user_id (
+          profiles!posts_user_id_fkey (
             full_name,
             avatar_url
           )
@@ -87,7 +87,13 @@ export default function PostDetailPage() {
         return
       }
 
-      setPost(postData)
+      // Transform the data to match our interface
+      const transformedPost = {
+        ...postData,
+        profiles: Array.isArray(postData.profiles) ? postData.profiles[0] : postData.profiles
+      }
+
+      setPost(transformedPost)
 
       // Check if user has liked this post
       if (currentUser) {

@@ -43,7 +43,7 @@ export default function CommentSection({ postId, currentUserId }: CommentSection
           content,
           created_at,
           user_id,
-          profiles:user_id (
+          profiles!post_comments_user_id_fkey (
             full_name,
             avatar_url
           )
@@ -53,7 +53,13 @@ export default function CommentSection({ postId, currentUserId }: CommentSection
 
       if (error) throw error
 
-      setComments(data || [])
+      // Transform the data to match our interface
+      const transformedData = data?.map(comment => ({
+        ...comment,
+        profiles: Array.isArray(comment.profiles) ? comment.profiles[0] : comment.profiles
+      })) || []
+
+      setComments(transformedData)
     } catch (err: any) {
       console.error('Error fetching comments:', err)
     } finally {

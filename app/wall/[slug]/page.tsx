@@ -98,7 +98,7 @@ export default function WallFeedPage() {
           comments_count,
           created_at,
           user_id,
-          profiles:user_id (
+          profiles!posts_user_id_fkey (
             full_name,
             avatar_url
           )
@@ -109,7 +109,13 @@ export default function WallFeedPage() {
 
       if (postsError) throw postsError
 
-      setPosts(postsData || [])
+      // Transform the data to match our interface
+      const transformedPosts = postsData?.map(post => ({
+        ...post,
+        profiles: Array.isArray(post.profiles) ? post.profiles[0] : post.profiles
+      })) || []
+
+      setPosts(transformedPosts)
 
       // Get user's likes if logged in
       if (currentUser) {
