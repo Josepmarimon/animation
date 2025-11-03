@@ -186,7 +186,9 @@ export default function AnimatorOfTheDay({ animator: initialAnimator, initialDay
             {/* Bio */}
             {animator.bio && (
               <p className="text-white text-lg mb-6 leading-relaxed">
-                {animator.bio}
+                {animator.bio.length > 200
+                  ? `${animator.bio.substring(0, 200)}...`
+                  : animator.bio}
               </p>
             )}
 
