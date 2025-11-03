@@ -13,7 +13,7 @@ export default function AnimatedLogo({
   textColor = "text-white",
   darkColor = "text-black"
 }: AnimatedLogoProps) {
-  const text = "Anim a a a tion"
+  const text = "kframehub"
   const letters = text.split('')
 
   // Count only non-space characters for delay calculation
