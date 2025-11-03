@@ -60,7 +60,7 @@ export default function WallFeedClient({
           comments_count,
           created_at,
           user_id,
-          profiles!posts_user_id_fkey (
+          profiles:user_id (
             full_name,
             avatar_url
           )
@@ -69,7 +69,10 @@ export default function WallFeedClient({
         .eq('is_public', true)
         .order('created_at', { ascending: false })
 
-      if (postsError) throw postsError
+      if (postsError) {
+        console.error('Posts error:', postsError)
+        throw postsError
+      }
 
       // Transform the data to match our interface
       const transformedPosts = postsData?.map(post => ({
@@ -81,12 +84,14 @@ export default function WallFeedClient({
 
       // Get user's likes if logged in
       if (currentUserId) {
-        const { data: likesData } = await supabase
+        const { data: likesData, error: likesError } = await supabase
           .from('post_likes')
           .select('post_id')
           .eq('user_id', currentUserId)
 
-        if (likesData) {
+        if (likesError) {
+          console.error('Likes error:', likesError)
+        } else if (likesData) {
           setUserLikes(new Set(likesData.map(like => like.post_id)))
         }
       }
