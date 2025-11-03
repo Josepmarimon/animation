@@ -60,7 +60,7 @@ export default function WallFeedClient({
           comments_count,
           created_at,
           user_id,
-          profiles:user_id (
+          profiles (
             full_name,
             avatar_url
           )
