@@ -138,7 +138,7 @@ export default async function WallsPage() {
         <div className="mb-8">
           <h1 className="text-4xl font-extrabold text-white mb-4">Community Walls</h1>
           <p className="text-lg text-blue-100">
-            Explora diferents espais temàtics per compartir idees, projectes i connectar amb altres professionals
+            Explore different thematic spaces to share ideas, projects, and connect with other professionals
           </p>
         </div>
 
@@ -160,9 +160,9 @@ export default async function WallsPage() {
         ) : (
           <div className="text-center py-16">
             <div className="rounded-2xl bg-white bg-opacity-10 backdrop-blur-md border border-white border-opacity-20 p-12">
-              <h3 className="text-xl font-semibold text-white mb-2">Cap mur disponible</h3>
+              <h3 className="text-xl font-semibold text-white mb-2">No walls available</h3>
               <p className="text-blue-100">
-                Els murs estaran disponibles aviat. Torna més tard!
+                Walls will be available soon. Come back later!
               </p>
             </div>
           </div>

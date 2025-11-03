@@ -71,12 +71,12 @@ export default function CommentSection({ postId, currentUserId }: CommentSection
     e.preventDefault()
 
     if (!currentUserId) {
-      setError('Has d\'estar autenticat per comentar')
+      setError('You must be authenticated to comment')
       return
     }
 
     if (!newComment.trim()) {
-      setError('El comentari no pot estar buit')
+      setError('Comment cannot be empty')
       return
     }
 
@@ -98,7 +98,7 @@ export default function CommentSection({ postId, currentUserId }: CommentSection
       await fetchComments()
     } catch (err: any) {
       console.error('Error creating comment:', err)
-      setError(err.message || 'Error creant el comentari')
+      setError(err.message || 'Error creating comment')
     } finally {
       setIsSubmitting(false)
     }
@@ -112,18 +112,18 @@ export default function CommentSection({ postId, currentUserId }: CommentSection
     const diffInHours = Math.floor(diffInMs / 3600000)
     const diffInDays = Math.floor(diffInMs / 86400000)
 
-    if (diffInMins < 1) return 'Ara mateix'
-    if (diffInMins < 60) return `Fa ${diffInMins} min`
-    if (diffInHours < 24) return `Fa ${diffInHours}h`
-    if (diffInDays < 7) return `Fa ${diffInDays}d`
+    if (diffInMins < 1) return 'Just now'
+    if (diffInMins < 60) return `${diffInMins}m ago`
+    if (diffInHours < 24) return `${diffInHours}h ago`
+    if (diffInDays < 7) return `${diffInDays}d ago`
 
-    return date.toLocaleDateString('ca-ES', { day: 'numeric', month: 'short' })
+    return date.toLocaleDateString('en-US', { day: 'numeric', month: 'short' })
   }
 
   return (
     <div className="rounded-2xl bg-white bg-opacity-10 backdrop-blur-md border border-white border-opacity-20 p-6">
       <h3 className="mb-4 text-lg font-semibold text-white">
-        Comentaris ({comments.length})
+        Comments ({comments.length})
       </h3>
 
       {/* Comment form */}
@@ -139,7 +139,7 @@ export default function CommentSection({ postId, currentUserId }: CommentSection
             <textarea
               value={newComment}
               onChange={(e) => setNewComment(e.target.value)}
-              placeholder="Escriu un comentari..."
+              placeholder="Write a comment..."
               rows={2}
               maxLength={2000}
               disabled={isSubmitting}
@@ -154,7 +154,7 @@ export default function CommentSection({ postId, currentUserId }: CommentSection
               disabled={isSubmitting || !newComment.trim()}
               className="rounded-lg bg-white bg-opacity-20 backdrop-blur-sm px-4 py-2 text-sm font-medium text-white hover:bg-opacity-30 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isSubmitting ? 'Enviant...' : 'Comentar'}
+              {isSubmitting ? 'Sending...' : 'Comment'}
             </button>
           </div>
         </form>
@@ -163,23 +163,23 @@ export default function CommentSection({ postId, currentUserId }: CommentSection
       {!currentUserId && (
         <div className="mb-6 rounded-lg bg-white bg-opacity-10 backdrop-blur-sm border border-white border-opacity-20 p-4 text-center">
           <p className="text-sm text-blue-200 mb-2">
-            Has d'estar autenticat per comentar
+            You must be authenticated to comment
           </p>
           <Link
             href="/auth/login"
             className="text-sm font-medium text-white hover:text-blue-200 transition-colors"
           >
-            Iniciar sessió
+            Log in
           </Link>
         </div>
       )}
 
       {/* Comments list */}
       {isLoading ? (
-        <div className="text-center text-blue-200 py-8">Carregant comentaris...</div>
+        <div className="text-center text-blue-200 py-8">Loading comments...</div>
       ) : comments.length === 0 ? (
         <div className="text-center text-blue-200 py-8">
-          Encara no hi ha comentaris. Sigues el primer!
+          No comments yet. Be the first!
         </div>
       ) : (
         <div className="space-y-4">

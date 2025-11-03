@@ -24,7 +24,7 @@ export default function CreatePostForm({ wallId, wallColor, onPostCreated }: Cre
 
     // Limit to 4 images
     if (selectedFiles.length + files.length > 4) {
-      setError('Màxim 4 imatges per publicació')
+      setError('Maximum 4 images per post')
       return
     }
 
@@ -51,7 +51,7 @@ export default function CreatePostForm({ wallId, wallColor, onPostCreated }: Cre
     e.preventDefault()
 
     if (!content.trim()) {
-      setError('El contingut no pot estar buit')
+      setError('Content cannot be empty')
       return
     }
 
@@ -62,7 +62,7 @@ export default function CreatePostForm({ wallId, wallColor, onPostCreated }: Cre
       const { data: { user } } = await supabase.auth.getUser()
 
       if (!user) {
-        setError('Has d\'estar autenticat per publicar')
+        setError('You must be authenticated to post')
         return
       }
 
@@ -110,7 +110,7 @@ export default function CreatePostForm({ wallId, wallColor, onPostCreated }: Cre
 
     } catch (err: any) {
       console.error('Error creating post:', err)
-      setError(err.message || 'Error creant la publicació')
+      setError(err.message || 'Error creating post')
     } finally {
       setIsSubmitting(false)
     }
@@ -121,7 +121,7 @@ export default function CreatePostForm({ wallId, wallColor, onPostCreated }: Cre
       onSubmit={handleSubmit}
       className="rounded-2xl bg-white bg-opacity-10 backdrop-blur-md border border-white border-opacity-20 p-6"
     >
-      <h3 className="mb-4 text-lg font-semibold text-white">Crear publicació</h3>
+      <h3 className="mb-4 text-lg font-semibold text-white">Create Post</h3>
 
       {error && (
         <div className="mb-4 rounded-lg bg-red-500 bg-opacity-20 border border-red-500 border-opacity-50 p-3 text-sm text-red-100">
@@ -133,7 +133,7 @@ export default function CreatePostForm({ wallId, wallColor, onPostCreated }: Cre
       <textarea
         value={content}
         onChange={(e) => setContent(e.target.value)}
-        placeholder="Què vols compartir?"
+        placeholder="What do you want to share?"
         rows={4}
         maxLength={5000}
         disabled={isSubmitting}
@@ -187,7 +187,7 @@ export default function CreatePostForm({ wallId, wallColor, onPostCreated }: Cre
                 <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
                 </svg>
-                <span>Imatge</span>
+                <span>Image</span>
               </div>
             </label>
           )}
@@ -200,7 +200,7 @@ export default function CreatePostForm({ wallId, wallColor, onPostCreated }: Cre
           style={{ backgroundColor: wallColor }}
           className="rounded-lg px-6 py-2 text-sm font-semibold text-white shadow-lg hover:opacity-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {isSubmitting ? 'Publicant...' : 'Publicar'}
+          {isSubmitting ? 'Publishing...' : 'Publish'}
         </button>
       </div>
     </form>

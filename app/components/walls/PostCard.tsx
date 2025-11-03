@@ -89,12 +89,12 @@ export default function PostCard({
     const diffInHours = Math.floor(diffInMs / 3600000)
     const diffInDays = Math.floor(diffInMs / 86400000)
 
-    if (diffInMins < 1) return 'Ara mateix'
-    if (diffInMins < 60) return `Fa ${diffInMins} min`
-    if (diffInHours < 24) return `Fa ${diffInHours}h`
-    if (diffInDays < 7) return `Fa ${diffInDays}d`
+    if (diffInMins < 1) return 'Just now'
+    if (diffInMins < 60) return `${diffInMins}m ago`
+    if (diffInHours < 24) return `${diffInHours}h ago`
+    if (diffInDays < 7) return `${diffInDays}d ago`
 
-    return date.toLocaleDateString('ca-ES', { day: 'numeric', month: 'short' })
+    return date.toLocaleDateString('en-US', { day: 'numeric', month: 'short' })
   }
 
   return (

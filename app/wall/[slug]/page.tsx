@@ -144,7 +144,7 @@ export default function WallFeedPage() {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-600 via-indigo-700 to-purple-800 flex items-center justify-center">
-        <div className="text-white text-xl">Carregant...</div>
+        <div className="text-white text-xl">Loading...</div>
       </div>
     )
   }
@@ -153,9 +153,9 @@ export default function WallFeedPage() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-600 via-indigo-700 to-purple-800 flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-white mb-4">{error || 'Mur no trobat'}</h1>
+          <h1 className="text-2xl font-bold text-white mb-4">{error || 'Wall not found'}</h1>
           <Link href="/wall" className="text-blue-200 hover:text-white transition-colors">
-            ← Tornar als murs
+            ← Back to walls
           </Link>
         </div>
       </div>
@@ -271,7 +271,7 @@ export default function WallFeedPage() {
           <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
           </svg>
-          Tornar als murs
+          Back to walls
         </Link>
 
         {/* Wall Header */}
@@ -296,12 +296,12 @@ export default function WallFeedPage() {
 
         {!user && (
           <div className="mb-8 rounded-2xl bg-white bg-opacity-10 backdrop-blur-md border border-white border-opacity-20 p-6 text-center">
-            <p className="text-blue-100 mb-3">Has d'estar autenticat per crear publicacions</p>
+            <p className="text-blue-100 mb-3">You must be authenticated to create posts</p>
             <Link
               href="/auth/login"
               className="inline-block rounded-lg bg-white px-6 py-2.5 text-sm font-medium text-blue-700 hover:bg-gray-100 transition-all"
             >
-              Iniciar sessió
+              Log in
             </Link>
           </div>
         )}
@@ -322,9 +322,9 @@ export default function WallFeedPage() {
           </div>
         ) : (
           <div className="rounded-2xl bg-white bg-opacity-10 backdrop-blur-md border border-white border-opacity-20 p-12 text-center">
-            <h3 className="text-xl font-semibold text-white mb-2">Encara no hi ha publicacions</h3>
+            <h3 className="text-xl font-semibold text-white mb-2">No posts yet</h3>
             <p className="text-blue-100">
-              {user ? 'Sigues el primer en publicar alguna cosa!' : 'Inicia sessió per crear la primera publicació'}
+              {user ? 'Be the first to post something!' : 'Log in to create the first post'}
             </p>
           </div>
         )}

@@ -132,7 +132,7 @@ export default function AdminWallsPage() {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-600 via-indigo-700 to-purple-800 flex items-center justify-center">
-        <div className="text-white text-xl">Carregant...</div>
+        <div className="text-white text-xl">Loading...</div>
       </div>
     )
   }
@@ -161,7 +161,7 @@ export default function AdminWallsPage() {
               href="/wall"
               className="rounded-lg bg-white bg-opacity-20 backdrop-blur-sm px-5 py-2.5 text-sm font-medium text-white hover:bg-opacity-30 transition-all"
             >
-              ← Tornar als Walls
+              ← Back to Walls
             </Link>
           </div>
         </div>
@@ -171,14 +171,14 @@ export default function AdminWallsPage() {
       <div className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-12">
         <div className="mb-8 flex items-center justify-between">
           <div>
-            <h1 className="text-4xl font-extrabold text-white mb-2">Gestió de Murs</h1>
-            <p className="text-lg text-blue-100">Administra els murs temàtics</p>
+            <h1 className="text-4xl font-extrabold text-white mb-2">Walls Management</h1>
+            <p className="text-lg text-blue-100">Manage thematic walls</p>
           </div>
           <button
             onClick={() => setShowCreateForm(!showCreateForm)}
             className="rounded-lg bg-white px-6 py-3 text-sm font-semibold text-blue-700 hover:bg-gray-100 transition-all shadow-lg"
           >
-            {showCreateForm ? 'Cancel·lar' : '+ Crear Nou Mur'}
+            {showCreateForm ? 'Cancel' : '+ Create New Wall'}
           </button>
         </div>
 
@@ -188,11 +188,11 @@ export default function AdminWallsPage() {
             onSubmit={handleSubmit}
             className="rounded-2xl bg-white bg-opacity-10 backdrop-blur-md border border-white border-opacity-20 p-6 mb-8"
           >
-            <h3 className="text-xl font-semibold text-white mb-4">Nou Mur</h3>
+            <h3 className="text-xl font-semibold text-white mb-4">New Wall</h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
               <div>
-                <label className="block text-sm font-medium text-blue-100 mb-2">Nom</label>
+                <label className="block text-sm font-medium text-blue-100 mb-2">Name</label>
                 <input
                   type="text"
                   required
@@ -215,7 +215,7 @@ export default function AdminWallsPage() {
             </div>
 
             <div className="mb-4">
-              <label className="block text-sm font-medium text-blue-100 mb-2">Descripció</label>
+              <label className="block text-sm font-medium text-blue-100 mb-2">Description</label>
               <textarea
                 rows={3}
                 value={formData.description}
@@ -226,7 +226,7 @@ export default function AdminWallsPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
               <div>
-                <label className="block text-sm font-medium text-blue-100 mb-2">Icona (Emoji)</label>
+                <label className="block text-sm font-medium text-blue-100 mb-2">Icon (Emoji)</label>
                 <input
                   type="text"
                   value={formData.icon}
@@ -246,7 +246,7 @@ export default function AdminWallsPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-blue-100 mb-2">Ordre</label>
+                <label className="block text-sm font-medium text-blue-100 mb-2">Order</label>
                 <input
                   type="number"
                   value={formData.display_order}
@@ -260,7 +260,7 @@ export default function AdminWallsPage() {
               type="submit"
               className="w-full rounded-lg bg-white px-6 py-3 text-sm font-semibold text-blue-700 hover:bg-gray-100 transition-all"
             >
-              Crear Mur
+              Create Wall
             </button>
           </form>
         )}
@@ -270,12 +270,12 @@ export default function AdminWallsPage() {
           <table className="w-full">
             <thead className="bg-white bg-opacity-10">
               <tr>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-white">Mur</th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-white">Wall</th>
                 <th className="px-6 py-4 text-left text-sm font-semibold text-white">Slug</th>
                 <th className="px-6 py-4 text-center text-sm font-semibold text-white">Posts</th>
-                <th className="px-6 py-4 text-center text-sm font-semibold text-white">Ordre</th>
-                <th className="px-6 py-4 text-center text-sm font-semibold text-white">Estat</th>
-                <th className="px-6 py-4 text-center text-sm font-semibold text-white">Accions</th>
+                <th className="px-6 py-4 text-center text-sm font-semibold text-white">Order</th>
+                <th className="px-6 py-4 text-center text-sm font-semibold text-white">Status</th>
+                <th className="px-6 py-4 text-center text-sm font-semibold text-white">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white divide-opacity-10">
@@ -306,7 +306,7 @@ export default function AdminWallsPage() {
                           : 'bg-red-500 bg-opacity-20 text-red-100'
                       }`}
                     >
-                      {wall.is_active ? 'Actiu' : 'Inactiu'}
+                      {wall.is_active ? 'Active' : 'Inactive'}
                     </span>
                   </td>
                   <td className="px-6 py-4 text-center">
@@ -314,7 +314,7 @@ export default function AdminWallsPage() {
                       onClick={() => toggleWallStatus(wall.id, wall.is_active)}
                       className="rounded-lg bg-white bg-opacity-20 backdrop-blur-sm px-4 py-2 text-sm font-medium text-white hover:bg-opacity-30 transition-all"
                     >
-                      {wall.is_active ? 'Desactivar' : 'Activar'}
+                      {wall.is_active ? 'Deactivate' : 'Activate'}
                     </button>
                   </td>
                 </tr>
@@ -324,7 +324,7 @@ export default function AdminWallsPage() {
 
           {walls.length === 0 && (
             <div className="text-center py-12 text-blue-100">
-              No hi ha murs. Crea'n un!
+              No walls yet. Create one!
             </div>
           )}
         </div>

@@ -118,7 +118,7 @@ export default function PostDetailPage() {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-600 via-indigo-700 to-purple-800 flex items-center justify-center">
-        <div className="text-white text-xl">Carregant...</div>
+        <div className="text-white text-xl">Loading...</div>
       </div>
     )
   }
@@ -127,9 +127,9 @@ export default function PostDetailPage() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-600 via-indigo-700 to-purple-800 flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-white mb-4">{error || 'Publicació no trobada'}</h1>
+          <h1 className="text-2xl font-bold text-white mb-4">{error || 'Post not found'}</h1>
           <Link href={`/wall/${slug}`} className="text-blue-200 hover:text-white transition-colors">
-            ← Tornar al mur
+            ← Back to wall
           </Link>
         </div>
       </div>
@@ -245,7 +245,7 @@ export default function PostDetailPage() {
           <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
           </svg>
-          Tornar al mur
+          Back to wall
         </Link>
 
         {/* Post */}
