@@ -260,7 +260,7 @@ export default function PostDetailPage() {
         </div>
 
         {/* Comments */}
-        <CommentSection postId={postId} currentUserId={user?.id} />
+        <CommentSection postId={postId} currentUserId={user?.id} onCommentAdded={fetchData} />
       </div>
 
       <Footer />

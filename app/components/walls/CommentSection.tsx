@@ -19,9 +19,10 @@ interface Comment {
 interface CommentSectionProps {
   postId: string
   currentUserId?: string
+  onCommentAdded?: () => void
 }
 
-export default function CommentSection({ postId, currentUserId }: CommentSectionProps) {
+export default function CommentSection({ postId, currentUserId, onCommentAdded }: CommentSectionProps) {
   const [comments, setComments] = useState<Comment[]>([])
   const [newComment, setNewComment] = useState('')
   const [isLoading, setIsLoading] = useState(true)
@@ -96,6 +97,9 @@ export default function CommentSection({ postId, currentUserId }: CommentSection
 
       setNewComment('')
       await fetchComments()
+
+      // Notify parent that a comment was added
+      if (onCommentAdded) onCommentAdded()
     } catch (err: any) {
       console.error('Error creating comment:', err)
       setError(err.message || 'Error creating comment')
