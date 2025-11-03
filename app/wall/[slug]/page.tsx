@@ -1,165 +1,98 @@
-'use client'
-
-import { useEffect, useState } from 'react'
-import { useParams, useRouter } from 'next/navigation'
-import { createClient } from '@/lib/supabase/client'
+import { createClient } from '@/lib/supabase/server'
+import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 import WallHeader from '../../components/walls/WallHeader'
-import CreatePostForm from '../../components/walls/CreatePostForm'
-import PostCard from '../../components/walls/PostCard'
+import WallFeedClient from './WallFeedClient'
 import Footer from '../../components/Footer'
 import AnimatedLogo from '../../components/AnimatedLogo'
 import MobileMenu from '../../components/MobileMenu'
 
-interface Wall {
-  id: string
-  name: string
-  slug: string
-  description: string
-  icon: string
-  color: string
-  posts_count: number
+interface PageProps {
+  params: {
+    slug: string
+  }
 }
 
-interface Post {
-  id: string
-  content: string
-  media_urls: string[]
-  likes_count: number
-  comments_count: number
-  created_at: string
-  user_id: string
-  profiles: {
-    full_name: string
-    avatar_url: string | null
-  } | null
+export async function generateStaticParams() {
+  const supabase = await createClient()
+
+  const { data: walls } = await supabase
+    .from('walls')
+    .select('slug')
+    .eq('is_active', true)
+
+  return walls?.map((wall) => ({
+    slug: wall.slug,
+  })) || []
 }
 
-export default function WallFeedPage() {
-  const params = useParams()
-  const router = useRouter()
-  const slug = params.slug as string
+export default async function WallFeedPage({ params }: PageProps) {
+  const { slug } = params
+  const supabase = await createClient()
 
-  const [wall, setWall] = useState<Wall | null>(null)
-  const [posts, setPosts] = useState<Post[]>([])
-  const [user, setUser] = useState<any>(null)
-  const [userProfile, setUserProfile] = useState<any>(null)
-  const [userLikes, setUserLikes] = useState<Set<string>>(new Set())
-  const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState('')
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
 
-  const supabase = createClient()
-
-  useEffect(() => {
-    fetchData()
-  }, [slug])
-
-  const fetchData = async () => {
-    try {
-      // Get user
-      const { data: { user: currentUser } } = await supabase.auth.getUser()
-      setUser(currentUser)
-
-      // Get user profile if logged in
-      if (currentUser) {
-        const { data: profile } = await supabase
-          .from('profiles')
-          .select('avatar_url, full_name')
-          .eq('id', currentUser.id)
-          .single()
-        setUserProfile(profile)
-      }
-
-      // Get wall
-      const { data: wallData, error: wallError } = await supabase
-        .from('walls')
-        .select('*')
-        .eq('slug', slug)
-        .eq('is_active', true)
-        .single()
-
-      if (wallError || !wallData) {
-        setError('Mur no trobat')
-        setIsLoading(false)
-        return
-      }
-
-      setWall(wallData)
-
-      // Get posts for this wall
-      const { data: postsData, error: postsError } = await supabase
-        .from('posts')
-        .select(`
-          id,
-          content,
-          media_urls,
-          likes_count,
-          comments_count,
-          created_at,
-          user_id,
-          profiles!posts_user_id_fkey (
-            full_name,
-            avatar_url
-          )
-        `)
-        .eq('wall_id', wallData.id)
-        .eq('is_public', true)
-        .order('created_at', { ascending: false })
-
-      if (postsError) throw postsError
-
-      // Transform the data to match our interface
-      const transformedPosts = postsData?.map(post => ({
-        ...post,
-        profiles: Array.isArray(post.profiles) ? post.profiles[0] : post.profiles
-      })) || []
-
-      setPosts(transformedPosts)
-
-      // Get user's likes if logged in
-      if (currentUser) {
-        const { data: likesData } = await supabase
-          .from('post_likes')
-          .select('post_id')
-          .eq('user_id', currentUser.id)
-
-        if (likesData) {
-          setUserLikes(new Set(likesData.map(like => like.post_id)))
-        }
-      }
-
-    } catch (err: any) {
-      console.error('Error fetching data:', err)
-      setError('Error carregant el mur')
-    } finally {
-      setIsLoading(false)
-    }
+  // Get user profile if logged in
+  let userProfile = null
+  if (user) {
+    const { data } = await supabase
+      .from('profiles')
+      .select('avatar_url, full_name')
+      .eq('id', user.id)
+      .single()
+    userProfile = data
   }
 
-  const handlePostCreated = () => {
-    fetchData()
+  // Get wall
+  const { data: wall, error: wallError } = await supabase
+    .from('walls')
+    .select('*')
+    .eq('slug', slug)
+    .eq('is_active', true)
+    .single()
+
+  if (wallError || !wall) {
+    notFound()
   }
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-600 via-indigo-700 to-purple-800 flex items-center justify-center">
-        <div className="text-white text-xl">Loading...</div>
-      </div>
-    )
-  }
+  // Get posts for this wall
+  const { data: postsData } = await supabase
+    .from('posts')
+    .select(`
+      id,
+      content,
+      media_urls,
+      likes_count,
+      comments_count,
+      created_at,
+      user_id,
+      profiles!posts_user_id_fkey (
+        full_name,
+        avatar_url
+      )
+    `)
+    .eq('wall_id', wall.id)
+    .eq('is_public', true)
+    .order('created_at', { ascending: false })
 
-  if (error || !wall) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-600 via-indigo-700 to-purple-800 flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-white mb-4">{error || 'Wall not found'}</h1>
-          <Link href="/wall" className="text-blue-200 hover:text-white transition-colors">
-            ← Back to walls
-          </Link>
-        </div>
-      </div>
-    )
+  // Transform the data to match our interface
+  const posts = postsData?.map(post => ({
+    ...post,
+    profiles: Array.isArray(post.profiles) ? post.profiles[0] : post.profiles
+  })) || []
+
+  // Get user's likes if logged in
+  let userLikes: string[] = []
+  if (user) {
+    const { data: likesData } = await supabase
+      .from('post_likes')
+      .select('post_id')
+      .eq('user_id', user.id)
+
+    userLikes = likesData?.map(like => like.post_id) || []
   }
 
   return (
@@ -283,17 +216,6 @@ export default function WallFeedPage() {
           postsCount={wall.posts_count || 0}
         />
 
-        {/* Create Post Form (only for authenticated users) */}
-        {user && (
-          <div className="mb-8">
-            <CreatePostForm
-              wallId={wall.id}
-              wallColor={wall.color || '#6366f1'}
-              onPostCreated={handlePostCreated}
-            />
-          </div>
-        )}
-
         {!user && (
           <div className="mb-8 rounded-2xl bg-white bg-opacity-10 backdrop-blur-md border border-white border-opacity-20 p-6 text-center">
             <p className="text-blue-100 mb-3">You must be authenticated to create posts</p>
@@ -306,28 +228,13 @@ export default function WallFeedPage() {
           </div>
         )}
 
-        {/* Posts Feed */}
-        {posts.length > 0 ? (
-          <div className="space-y-6">
-            {posts.map((post) => (
-              <PostCard
-                key={post.id}
-                post={post}
-                wallSlug={wall.slug}
-                currentUserId={user?.id}
-                isLikedByUser={userLikes.has(post.id)}
-                onLikeToggle={fetchData}
-              />
-            ))}
-          </div>
-        ) : (
-          <div className="rounded-2xl bg-white bg-opacity-10 backdrop-blur-md border border-white border-opacity-20 p-12 text-center">
-            <h3 className="text-xl font-semibold text-white mb-2">No posts yet</h3>
-            <p className="text-blue-100">
-              {user ? 'Be the first to post something!' : 'Log in to create the first post'}
-            </p>
-          </div>
-        )}
+        {/* Client-side posts feed */}
+        <WallFeedClient
+          initialWall={wall}
+          initialPosts={posts}
+          initialUserLikes={userLikes}
+          currentUserId={user?.id}
+        />
       </div>
 
       <Footer />
