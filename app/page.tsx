@@ -69,9 +69,15 @@ export default async function Home() {
                 <>
                   <Link
                     href="/directory"
-                    className="rounded-lg bg-white px-5 py-2.5 text-sm font-medium text-blue-700 hover:bg-gray-100 transition-all"
+                    className="rounded-lg bg-white bg-opacity-20 backdrop-blur-sm px-5 py-2.5 text-sm font-medium text-white hover:bg-opacity-30 transition-all"
                   >
                     Directory
+                  </Link>
+                  <Link
+                    href="/wall"
+                    className="rounded-lg bg-white bg-opacity-20 backdrop-blur-sm px-5 py-2.5 text-sm font-medium text-white hover:bg-opacity-30 transition-all"
+                  >
+                    Walls
                   </Link>
                   <Link
                     href="/about"
@@ -106,6 +112,12 @@ export default async function Home() {
                     className="rounded-lg bg-white bg-opacity-20 backdrop-blur-sm px-5 py-2.5 text-sm font-medium text-white hover:bg-opacity-30 transition-all"
                   >
                     Directory
+                  </Link>
+                  <Link
+                    href="/wall"
+                    className="rounded-lg bg-white bg-opacity-20 backdrop-blur-sm px-5 py-2.5 text-sm font-medium text-white hover:bg-opacity-30 transition-all"
+                  >
+                    Walls
                   </Link>
                   <Link
                     href="/about"

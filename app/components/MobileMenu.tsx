@@ -79,6 +79,14 @@ export default function MobileMenu({ user, userProfile }: MobileMenuProps) {
                     </Link>
 
                     <Link
+                      href="/wall"
+                      onClick={() => setIsOpen(false)}
+                      className="block px-4 py-3 rounded-lg text-white font-medium hover:bg-white hover:bg-opacity-10 transition-all"
+                    >
+                      Walls
+                    </Link>
+
+                    <Link
                       href="/about"
                       onClick={() => setIsOpen(false)}
                       className="block px-4 py-3 rounded-lg text-white font-medium hover:bg-white hover:bg-opacity-10 transition-all"
@@ -94,6 +102,14 @@ export default function MobileMenu({ user, userProfile }: MobileMenuProps) {
                       className="block px-4 py-3 rounded-lg text-white font-medium hover:bg-white hover:bg-opacity-10 transition-all"
                     >
                       Directory
+                    </Link>
+
+                    <Link
+                      href="/wall"
+                      onClick={() => setIsOpen(false)}
+                      className="block px-4 py-3 rounded-lg text-white font-medium hover:bg-white hover:bg-opacity-10 transition-all"
+                    >
+                      Walls
                     </Link>
 
                     <Link
