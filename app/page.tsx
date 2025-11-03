@@ -135,9 +135,9 @@ export default async function Home() {
       </nav>
 
       {/* Hero Section - Full Screen */}
-      <div className="relative z-10 flex items-end sm:items-center justify-center px-4 sm:px-6 lg:px-8 pb-[200px] sm:pb-0 h-screen sm:min-h-0" style={{ minHeight: 'calc(100vh - 4rem)' }}>
+      <div className="relative z-10 flex items-end sm:items-center justify-center px-4 sm:px-6 lg:px-8 pb-[200px] sm:pb-0 h-screen sm:h-auto sm:py-16" style={{ minHeight: 'calc(100vh - 4rem)' }}>
         <div className="text-center max-w-3xl mx-auto">
-          <h2 className="text-2xl font-extrabold tracking-tight text-white sm:text-3xl md:text-4xl mb-6 sm:mb-8 animate-fade-in">
+          <h2 className="text-2xl font-extrabold tracking-tight text-white sm:text-4xl md:text-5xl lg:text-6xl mb-6 sm:mb-8 animate-fade-in">
             Find and connect with
             <span className="block bg-gradient-to-r from-blue-200 to-purple-200 bg-clip-text text-transparent">
               animation professionals
