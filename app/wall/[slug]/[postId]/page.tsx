@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -28,6 +28,7 @@ interface Post {
 
 export default function PostDetailPage() {
   const params = useParams()
+  const router = useRouter()
   const slug = params.slug as string
   const postId = params.postId as string
 
@@ -39,6 +40,11 @@ export default function PostDetailPage() {
   const [error, setError] = useState('')
 
   const supabase = createClient()
+
+  const handlePostDelete = () => {
+    // Redirect back to wall when post is deleted
+    router.push(`/wall/${slug}`)
+  }
 
   useEffect(() => {
     fetchData()
@@ -256,6 +262,7 @@ export default function PostDetailPage() {
             currentUserId={user?.id}
             isLikedByUser={isLiked}
             onLikeToggle={fetchData}
+            onDelete={handlePostDelete}
           />
         </div>
 

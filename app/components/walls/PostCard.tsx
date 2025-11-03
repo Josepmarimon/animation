@@ -25,6 +25,7 @@ interface PostCardProps {
   currentUserId?: string
   isLikedByUser: boolean
   onLikeToggle?: () => void
+  onDelete?: () => void
 }
 
 export default function PostCard({
@@ -33,12 +34,15 @@ export default function PostCard({
   currentUserId,
   isLikedByUser: initialIsLiked,
   onLikeToggle,
+  onDelete,
 }: PostCardProps) {
   const [isLiked, setIsLiked] = useState(initialIsLiked)
   const [likesCount, setLikesCount] = useState(post.likes_count)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isDeleting, setIsDeleting] = useState(false)
 
   const supabase = createClient()
+  const isAuthor = currentUserId === post.user_id
 
   const handleLikeToggle = async () => {
     if (!currentUserId || isSubmitting) return
@@ -78,6 +82,32 @@ export default function PostCard({
       console.error('Error toggling like:', err)
     } finally {
       setIsSubmitting(false)
+    }
+  }
+
+  const handleDelete = async () => {
+    if (!isAuthor || isDeleting) return
+
+    if (!confirm('Are you sure you want to delete this post? This action cannot be undone.')) {
+      return
+    }
+
+    setIsDeleting(true)
+
+    try {
+      const { error } = await supabase
+        .from('posts')
+        .delete()
+        .eq('id', post.id)
+
+      if (error) throw error
+
+      if (onDelete) onDelete()
+    } catch (err) {
+      console.error('Error deleting post:', err)
+      alert('Error deleting post. Please try again.')
+    } finally {
+      setIsDeleting(false)
     }
   }
 
@@ -126,6 +156,20 @@ export default function PostCard({
           </Link>
           <p className="text-sm text-blue-200">{formatDate(post.created_at)}</p>
         </div>
+
+        {/* Delete button (only for post author) */}
+        {isAuthor && (
+          <button
+            onClick={handleDelete}
+            disabled={isDeleting}
+            className="flex-shrink-0 text-red-300 hover:text-red-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            title="Delete post"
+          >
+            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+            </svg>
+          </button>
+        )}
       </div>
 
       {/* Content */}

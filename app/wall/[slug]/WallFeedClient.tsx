@@ -128,6 +128,7 @@ export default function WallFeedClient({
               currentUserId={currentUserId}
               isLikedByUser={userLikes.has(post.id)}
               onLikeToggle={fetchData}
+              onDelete={fetchData}
             />
           ))}
         </div>
