@@ -113,7 +113,16 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
 
   const contactInfo = profile?.contact_info || {}
   const portfolioProjects = profile?.portfolio_projects || []
-  const featuredImage = portfolioProjects.find((p: any) => p.is_featured) || portfolioProjects[0]
+  // Only use images for featured display, not videos
+  // Filter out any URLs that look like video links (youtube, vimeo, youtu.be)
+  const isVideoUrl = (url: string) => {
+    return url.includes('youtube.com') || url.includes('youtu.be') || url.includes('vimeo.com')
+  }
+  const featuredImage = portfolioProjects.find((p: any) =>
+    p.is_featured && p.type !== 'youtube' && p.type !== 'vimeo' && !isVideoUrl(p.url || '')
+  ) || portfolioProjects.find((p: any) =>
+    p.type === 'image' || (!p.type && !isVideoUrl(p.url || ''))
+  )
 
   return (
     <div className="relative min-h-screen bg-gradient-to-br from-blue-600 via-indigo-700 to-purple-800">
@@ -317,9 +326,9 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
             )}
 
             {/* Video Showreel Section */}
-            {(contactInfo.youtube || contactInfo.vimeo) && (() => {
-              const hasYoutube = contactInfo.youtube && getYouTubeEmbedUrl(contactInfo.youtube)
-              const hasVimeo = contactInfo.vimeo && getVimeoEmbedUrl(contactInfo.vimeo)
+            {(contactInfo.showreel_youtube || contactInfo.showreel_vimeo) && (() => {
+              const hasYoutube = contactInfo.showreel_youtube && getYouTubeEmbedUrl(contactInfo.showreel_youtube)
+              const hasVimeo = contactInfo.showreel_vimeo && getVimeoEmbedUrl(contactInfo.showreel_vimeo)
               const videoCount = (hasYoutube ? 1 : 0) + (hasVimeo ? 1 : 0)
 
               return (
@@ -330,7 +339,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
                       <div className="space-y-2">
                         <div className="relative aspect-video rounded-lg overflow-hidden bg-gray-100">
                           <iframe
-                            src={getYouTubeEmbedUrl(contactInfo.youtube) || ''}
+                            src={getYouTubeEmbedUrl(contactInfo.showreel_youtube) || ''}
                             className="absolute inset-0 w-full h-full"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                             allowFullScreen
@@ -348,7 +357,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
                       <div className="space-y-2">
                         <div className="relative aspect-video rounded-lg overflow-hidden bg-gray-100">
                           <iframe
-                            src={getVimeoEmbedUrl(contactInfo.vimeo) || ''}
+                            src={getVimeoEmbedUrl(contactInfo.showreel_vimeo) || ''}
                             className="absolute inset-0 w-full h-full"
                             allow="autoplay; fullscreen; picture-in-picture"
                             allowFullScreen
@@ -375,12 +384,28 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
                   {portfolioProjects.map((project: any, idx: number) => (
                     <div key={idx} className="group">
                       <div className="relative aspect-video rounded-lg overflow-hidden bg-gray-100 mb-3">
-                        <Image
-                          src={project.url}
-                          alt={project.title || 'Portfolio image'}
-                          fill
-                          className="object-cover group-hover:scale-105 transition-transform duration-300"
-                        />
+                        {project.type === 'youtube' ? (
+                          <iframe
+                            src={getYouTubeEmbedUrl(project.url) || ''}
+                            className="absolute inset-0 w-full h-full"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                          ></iframe>
+                        ) : project.type === 'vimeo' ? (
+                          <iframe
+                            src={getVimeoEmbedUrl(project.url) || ''}
+                            className="absolute inset-0 w-full h-full"
+                            allow="autoplay; fullscreen; picture-in-picture"
+                            allowFullScreen
+                          ></iframe>
+                        ) : (
+                          <Image
+                            src={project.url}
+                            alt={project.title || 'Portfolio image'}
+                            fill
+                            className="object-cover group-hover:scale-105 transition-transform duration-300"
+                          />
+                        )}
                       </div>
                       {project.title && (
                         <h3 className="font-semibold text-gray-900 mb-1">

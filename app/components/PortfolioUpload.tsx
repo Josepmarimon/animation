@@ -10,6 +10,7 @@ interface PortfolioImage {
   title: string
   description: string
   is_featured?: boolean
+  type?: 'image' | 'youtube' | 'vimeo'
 }
 
 interface PortfolioUploadProps {
@@ -22,6 +23,8 @@ export default function PortfolioUpload({ userId, initialImages = [], onImagesCh
   const [images, setImages] = useState<PortfolioImage[]>(initialImages)
   const [uploading, setUploading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [showVideoInput, setShowVideoInput] = useState(false)
+  const [videoUrl, setVideoUrl] = useState('')
   const fileInputRef = useRef<HTMLInputElement>(null)
   const supabase = createClient()
 
@@ -74,7 +77,8 @@ export default function PortfolioUpload({ userId, initialImages = [], onImagesCh
         url: publicUrl,
         title: '',
         description: '',
-        is_featured: images.length === 0 // First image is featured by default
+        is_featured: images.length === 0, // First image is featured by default
+        type: 'image'
       }
 
       const updatedImages = [...images, newImage]
@@ -89,6 +93,43 @@ export default function PortfolioUpload({ userId, initialImages = [], onImagesCh
     } catch (err: any) {
       setError(err.message || 'Error uploading image')
       setUploading(false)
+    }
+  }
+
+  const handleAddVideo = () => {
+    try {
+      setError(null)
+
+      if (!videoUrl.trim()) {
+        setError('Please enter a video URL')
+        return
+      }
+
+      // Detect video type
+      let type: 'youtube' | 'vimeo' = 'youtube'
+      if (videoUrl.includes('vimeo.com')) {
+        type = 'vimeo'
+      } else if (!videoUrl.includes('youtube.com') && !videoUrl.includes('youtu.be')) {
+        setError('Please enter a valid YouTube or Vimeo URL')
+        return
+      }
+
+      const newVideo: PortfolioImage = {
+        id: Date.now().toString(),
+        url: videoUrl,
+        title: '',
+        description: '',
+        is_featured: images.length === 0,
+        type: type
+      }
+
+      const updatedImages = [...images, newVideo]
+      setImages(updatedImages)
+      onImagesChange(updatedImages)
+      setVideoUrl('')
+      setShowVideoInput(false)
+    } catch (err: any) {
+      setError(err.message || 'Error adding video')
     }
   }
 
@@ -109,14 +150,16 @@ export default function PortfolioUpload({ userId, initialImages = [], onImagesCh
     onImagesChange(updatedImages)
   }
 
-  const deleteImage = async (id: string, url: string) => {
+  const deleteImage = async (id: string, url: string, type?: string) => {
     try {
-      // Extract the path from the URL
-      const path = url.split('/portfolio/')[1]
+      // Only delete from storage if it's an uploaded image (not a video URL)
+      if (type === 'image') {
+        const path = url.split('/portfolio/')[1]
 
-      if (path) {
-        // Delete from Supabase Storage
-        await supabase.storage.from('portfolio').remove([path])
+        if (path) {
+          // Delete from Supabase Storage
+          await supabase.storage.from('portfolio').remove([path])
+        }
       }
 
       // Remove from state
@@ -124,7 +167,7 @@ export default function PortfolioUpload({ userId, initialImages = [], onImagesCh
       setImages(updatedImages)
       onImagesChange(updatedImages)
     } catch (err: any) {
-      setError(err.message || 'Error deleting image')
+      setError(err.message || 'Error deleting item')
     }
   }
 
@@ -132,14 +175,14 @@ export default function PortfolioUpload({ userId, initialImages = [], onImagesCh
     <div className="space-y-6">
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
-          Portfolio Images
+          Portfolio Items
         </label>
         <p className="text-xs text-gray-500 mb-3">
-          The featured image will be displayed prominently on your profile and in the directory.
+          Add images or videos to showcase your work. The featured item will be displayed prominently on your profile.
         </p>
 
-        {/* Upload button */}
-        <div className="mb-4">
+        {/* Upload buttons */}
+        <div className="mb-4 flex gap-3">
           <input
             ref={fileInputRef}
             type="file"
@@ -153,12 +196,54 @@ export default function PortfolioUpload({ userId, initialImages = [], onImagesCh
             disabled={uploading}
             className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
           >
-            {uploading ? 'Uploading...' : '+ Add portfolio image'}
+            {uploading ? 'Uploading...' : '+ Add Image'}
           </button>
-          <p className="mt-2 text-xs text-gray-500">
-            JPG, PNG or WEBP. Max 10MB per image.
-          </p>
+          <button
+            type="button"
+            onClick={() => setShowVideoInput(!showVideoInput)}
+            className="rounded-md bg-purple-600 px-4 py-2 text-sm font-medium text-white hover:bg-purple-700"
+          >
+            + Add Video
+          </button>
         </div>
+
+        {/* Video URL input */}
+        {showVideoInput && (
+          <div className="mb-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Video URL
+            </label>
+            <p className="text-xs text-gray-500 mb-2">
+              Enter a YouTube or Vimeo URL
+            </p>
+            <div className="flex gap-2">
+              <input
+                type="url"
+                value={videoUrl}
+                onChange={(e) => setVideoUrl(e.target.value)}
+                placeholder="https://www.youtube.com/watch?v=..."
+                className="flex-1 rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
+              />
+              <button
+                type="button"
+                onClick={handleAddVideo}
+                className="rounded-md bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700"
+              >
+                Add
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setShowVideoInput(false)
+                  setVideoUrl('')
+                }}
+                className="rounded-md bg-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-400"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        )}
 
         {error && (
           <div className="mb-4 p-3 bg-red-50 rounded-md">
@@ -179,15 +264,26 @@ export default function PortfolioUpload({ userId, initialImages = [], onImagesCh
                 }`}
               >
                 <div className="flex gap-4">
-                  {/* Image preview */}
+                  {/* Preview */}
                   <div className="flex-shrink-0 relative">
-                    <Image
-                      src={image.url}
-                      alt={image.title || 'Portfolio image'}
-                      width={160}
-                      height={120}
-                      className="rounded-lg object-cover w-40 h-30"
-                    />
+                    {image.type === 'image' ? (
+                      <Image
+                        src={image.url}
+                        alt={image.title || 'Portfolio image'}
+                        width={160}
+                        height={120}
+                        className="rounded-lg object-cover w-40 h-30"
+                      />
+                    ) : (
+                      <div className="w-40 h-30 rounded-lg bg-gray-100 flex items-center justify-center border border-gray-300">
+                        <div className="text-center px-2">
+                          <svg className="w-10 h-10 mx-auto mb-1 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z" />
+                          </svg>
+                          <p className="text-xs text-gray-500">{image.type === 'youtube' ? 'YouTube' : 'Vimeo'}</p>
+                        </div>
+                      </div>
+                    )}
                     {image.is_featured && (
                       <div className="absolute top-2 right-2 bg-blue-600 text-white text-xs px-2 py-1 rounded-full font-medium">
                         Featured
@@ -230,15 +326,15 @@ export default function PortfolioUpload({ userId, initialImages = [], onImagesCh
                           onClick={() => setFeaturedImage(image.id)}
                           className="text-sm text-blue-600 hover:text-blue-700 font-medium"
                         >
-                          Set as featured image
+                          Set as featured
                         </button>
                       )}
                       <button
                         type="button"
-                        onClick={() => deleteImage(image.id, image.url)}
+                        onClick={() => deleteImage(image.id, image.url, image.type)}
                         className="text-sm text-red-600 hover:text-red-700"
                       >
-                        Delete image
+                        Delete {image.type === 'image' ? 'image' : 'video'}
                       </button>
                     </div>
                   </div>
@@ -250,7 +346,7 @@ export default function PortfolioUpload({ userId, initialImages = [], onImagesCh
 
         {images.length === 0 && !uploading && (
           <p className="text-sm text-gray-500 italic">
-            No portfolio images yet. Add some to showcase your work!
+            No portfolio items yet. Add images or videos to showcase your work!
           </p>
         )}
       </div>

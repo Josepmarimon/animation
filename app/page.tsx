@@ -164,11 +164,11 @@ export default async function Home() {
         </div>
       </nav>
 
-      {/* Animator of the Day - Megacard */}
+      {/* Expert of the Day - Megacard */}
       <div className="relative z-10 mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <h2 className="text-4xl font-extrabold text-white mb-8 text-center">
           <span className="bg-gradient-to-r from-blue-200 to-purple-200 bg-clip-text text-transparent">
-            Animator of the Day
+            Expert of the Day
           </span>
         </h2>
 
@@ -176,7 +176,7 @@ export default async function Home() {
           <AnimatorOfTheDay animator={animatorOfTheDay} />
         ) : (
           <div className="bg-white bg-opacity-10 backdrop-blur-md border border-white border-opacity-20 rounded-3xl p-12 text-center">
-            <p className="text-white text-xl">No animators available yet. Be the first to join!</p>
+            <p className="text-white text-xl">No experts available yet. Be the first to join!</p>
             <Link
               href="/auth/signup"
               className="inline-block mt-6 rounded-xl bg-white px-8 py-4 text-lg font-semibold text-blue-700 shadow-2xl hover:bg-gray-100 hover:scale-105 transform transition-all duration-200"
@@ -196,7 +196,13 @@ export default async function Home() {
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {latestUsers.map((profile) => {
               const portfolioProjects = profile.portfolio_projects || []
-              const featuredImage = portfolioProjects.find((p: any) => p.is_featured) || portfolioProjects[0]
+              // Only use images for featured display, not videos
+              const isVideoUrl = (url: string) => url.includes('youtube.com') || url.includes('youtu.be') || url.includes('vimeo.com')
+              const featuredImage = portfolioProjects.find((p: any) =>
+                p.is_featured && p.type !== 'youtube' && p.type !== 'vimeo' && !isVideoUrl(p.url || '')
+              ) || portfolioProjects.find((p: any) =>
+                p.type === 'image' || (!p.type && !isVideoUrl(p.url || ''))
+              )
 
               return (
                 <div

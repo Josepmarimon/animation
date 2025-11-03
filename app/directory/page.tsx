@@ -150,7 +150,13 @@ export default async function DirectoryPage({ searchParams }: DirectoryPageProps
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {profiles.map((profile) => {
               const portfolioProjects = profile.portfolio_projects || []
-              const featuredImage = portfolioProjects.find((p: any) => p.is_featured) || portfolioProjects[0]
+              // Only use images for featured display, not videos
+              const isVideoUrl = (url: string) => url.includes('youtube.com') || url.includes('youtu.be') || url.includes('vimeo.com')
+              const featuredImage = portfolioProjects.find((p: any) =>
+                p.is_featured && p.type !== 'youtube' && p.type !== 'vimeo' && !isVideoUrl(p.url || '')
+              ) || portfolioProjects.find((p: any) =>
+                p.type === 'image' || (!p.type && !isVideoUrl(p.url || ''))
+              )
 
               return (
                 <div

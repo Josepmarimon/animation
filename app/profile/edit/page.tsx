@@ -30,6 +30,7 @@ interface PortfolioImage {
   url: string
   title: string
   description: string
+  type?: 'image' | 'youtube' | 'vimeo'
 }
 
 interface ContactInfo {
@@ -74,6 +75,8 @@ export default function EditProfilePage() {
   const [behance, setBehance] = useState('')
   const [vimeo, setVimeo] = useState('')
   const [youtube, setYoutube] = useState('')
+  const [showreelYoutube, setShowreelYoutube] = useState('')
+  const [showreelVimeo, setShowreelVimeo] = useState('')
 
   useEffect(() => {
     async function loadProfile() {
@@ -123,7 +126,8 @@ export default function EditProfilePage() {
             id: p.id || `${idx}`,
             url: p.url || '',
             title: p.title || '',
-            description: p.description || ''
+            description: p.description || '',
+            type: p.type || 'image'
           }))
           setPortfolioImages(parsed)
         }
@@ -137,6 +141,8 @@ export default function EditProfilePage() {
         setBehance(contactInfo.behance || '')
         setVimeo(contactInfo.vimeo || '')
         setYoutube(contactInfo.youtube || '')
+        setShowreelYoutube(contactInfo.showreel_youtube || '')
+        setShowreelVimeo(contactInfo.showreel_vimeo || '')
       }
 
       setLoading(false)
@@ -176,6 +182,8 @@ export default function EditProfilePage() {
     if (behance) contactInfo.behance = behance
     if (vimeo) contactInfo.vimeo = vimeo
     if (youtube) contactInfo.youtube = youtube
+    if (showreelYoutube) contactInfo.showreel_youtube = showreelYoutube
+    if (showreelVimeo) contactInfo.showreel_vimeo = showreelVimeo
 
     const { error: updateError } = await supabase
       .from('profiles')
@@ -469,6 +477,43 @@ export default function EditProfilePage() {
                       value={youtube}
                       onChange={(e) => setYoutube(e.target.value)}
                       placeholder="https://youtube.com/@username"
+                      className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-blue-500"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Showreel Videos */}
+              <div className="border-t border-gray-200 pt-6">
+                <h3 className="text-lg font-medium text-gray-900 mb-4">Showreel Videos</h3>
+                <p className="text-sm text-gray-600 mb-4">
+                  Add specific video URLs for your showreel (different from your channel links above)
+                </p>
+                <div className="space-y-4">
+                  <div>
+                    <label htmlFor="showreelYoutube" className="block text-sm font-medium text-gray-700">
+                      Showreel YouTube Video
+                    </label>
+                    <input
+                      id="showreelYoutube"
+                      type="url"
+                      value={showreelYoutube}
+                      onChange={(e) => setShowreelYoutube(e.target.value)}
+                      placeholder="https://www.youtube.com/watch?v=VIDEO_ID"
+                      className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-blue-500"
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="showreelVimeo" className="block text-sm font-medium text-gray-700">
+                      Showreel Vimeo Video
+                    </label>
+                    <input
+                      id="showreelVimeo"
+                      type="url"
+                      value={showreelVimeo}
+                      onChange={(e) => setShowreelVimeo(e.target.value)}
+                      placeholder="https://vimeo.com/VIDEO_ID"
                       className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-blue-500"
                     />
                   </div>

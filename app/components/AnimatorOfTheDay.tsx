@@ -23,9 +23,13 @@ export default function AnimatorOfTheDay({ animator: initialAnimator, initialDay
   const [isLoading, setIsLoading] = useState(false)
   const supabase = createClient()
 
-  // Get featured image or first portfolio image
+  // Get featured image or first portfolio image (only images, not videos)
   const portfolioProjects = animator?.portfolio_projects || []
-  const initialFeatured = portfolioProjects.find((p: any) => p.is_featured) || portfolioProjects[0]
+  const isVideoUrl = (url: string) => url.includes('youtube.com') || url.includes('youtu.be') || url.includes('vimeo.com')
+  const imageProjects = portfolioProjects.filter((p: any) =>
+    p.type === 'image' || (!p.type && !isVideoUrl(p.url || ''))
+  )
+  const initialFeatured = imageProjects.find((p: any) => p.is_featured) || imageProjects[0]
 
   const [selectedImage, setSelectedImage] = useState(initialFeatured)
 
@@ -34,7 +38,10 @@ export default function AnimatorOfTheDay({ animator: initialAnimator, initialDay
       fetchAnimatorForDay()
     } else {
       setAnimator(initialAnimator)
-      const newFeatured = (initialAnimator?.portfolio_projects || []).find((p: any) => p.is_featured) || initialAnimator?.portfolio_projects?.[0]
+      const images = (initialAnimator?.portfolio_projects || []).filter((p: any) =>
+        p.type === 'image' || (!p.type && !isVideoUrl(p.url || ''))
+      )
+      const newFeatured = images.find((p: any) => p.is_featured) || images[0]
       setSelectedImage(newFeatured)
     }
   }, [dayOffset])
@@ -54,7 +61,10 @@ export default function AnimatorOfTheDay({ animator: initialAnimator, initialDay
         const selectedAnimator = allPublicUsers[randomIndex]
 
         setAnimator(selectedAnimator)
-        const newFeatured = (selectedAnimator?.portfolio_projects || []).find((p: any) => p.is_featured) || selectedAnimator?.portfolio_projects?.[0]
+        const images = (selectedAnimator?.portfolio_projects || []).filter((p: any) =>
+          p.type === 'image' || (!p.type && !isVideoUrl(p.url || ''))
+        )
+        const newFeatured = images.find((p: any) => p.is_featured) || images[0]
         setSelectedImage(newFeatured)
       }
     } catch (error) {
@@ -210,11 +220,11 @@ export default function AnimatorOfTheDay({ animator: initialAnimator, initialDay
             )}
 
             {/* Portfolio thumbnails */}
-            {portfolioProjects.length > 1 && (
+            {imageProjects.length > 1 && (
               <div className="mb-6">
                 <h4 className="text-sm font-semibold text-blue-200 mb-3 uppercase tracking-wide">More Work</h4>
                 <div className="grid grid-cols-4 gap-2">
-                  {portfolioProjects.slice(0, 4).map((project: any, idx: number) => (
+                  {imageProjects.slice(0, 4).map((project: any, idx: number) => (
                     <button
                       key={idx}
                       onClick={() => setSelectedImage(project)}
