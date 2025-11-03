@@ -1,11 +1,13 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { createClient } from '@/lib/supabase/client'
 
 interface AnimatorOfTheDayProps {
   animator: any
+  initialDayOffset?: number
 }
 
 function formatSpecialization(spec: string): string {
@@ -15,16 +17,119 @@ function formatSpecialization(spec: string): string {
     .join(' ')
 }
 
-export default function AnimatorOfTheDay({ animator }: AnimatorOfTheDayProps) {
+export default function AnimatorOfTheDay({ animator: initialAnimator, initialDayOffset = 0 }: AnimatorOfTheDayProps) {
+  const [dayOffset, setDayOffset] = useState(initialDayOffset)
+  const [animator, setAnimator] = useState(initialAnimator)
+  const [isLoading, setIsLoading] = useState(false)
+  const supabase = createClient()
+
   // Get featured image or first portfolio image
-  const portfolioProjects = animator.portfolio_projects || []
+  const portfolioProjects = animator?.portfolio_projects || []
   const initialFeatured = portfolioProjects.find((p: any) => p.is_featured) || portfolioProjects[0]
 
   const [selectedImage, setSelectedImage] = useState(initialFeatured)
 
+  useEffect(() => {
+    if (dayOffset !== 0) {
+      fetchAnimatorForDay()
+    } else {
+      setAnimator(initialAnimator)
+      const newFeatured = (initialAnimator?.portfolio_projects || []).find((p: any) => p.is_featured) || initialAnimator?.portfolio_projects?.[0]
+      setSelectedImage(newFeatured)
+    }
+  }, [dayOffset])
+
+  const fetchAnimatorForDay = async () => {
+    setIsLoading(true)
+    try {
+      const { data: allPublicUsers } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('is_public', true)
+
+      if (allPublicUsers && allPublicUsers.length > 0) {
+        const today = new Date()
+        const targetDay = Math.floor(today.getTime() / (1000 * 60 * 60 * 24)) + dayOffset
+        const randomIndex = ((targetDay % allPublicUsers.length) + allPublicUsers.length) % allPublicUsers.length
+        const selectedAnimator = allPublicUsers[randomIndex]
+
+        setAnimator(selectedAnimator)
+        const newFeatured = (selectedAnimator?.portfolio_projects || []).find((p: any) => p.is_featured) || selectedAnimator?.portfolio_projects?.[0]
+        setSelectedImage(newFeatured)
+      }
+    } catch (error) {
+      console.error('Error fetching animator:', error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const handlePrevious = () => {
+    setDayOffset(prev => prev - 1)
+  }
+
+  const handleNext = () => {
+    if (dayOffset < 0) {
+      setDayOffset(prev => prev + 1)
+    }
+  }
+
+  const getDateLabel = () => {
+    if (dayOffset === 0) return "Today"
+    if (dayOffset === -1) return "Yesterday"
+
+    const today = new Date()
+    const targetDate = new Date(today.getTime() + (dayOffset * 24 * 60 * 60 * 1000))
+    return targetDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+  }
+
+  if (!animator) return null
+
   return (
-    <div className="bg-white bg-opacity-10 backdrop-blur-md border border-white border-opacity-20 rounded-3xl overflow-hidden shadow-2xl">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
+    <div className="relative">
+      {/* Navigation arrows */}
+      <div className="absolute -left-4 sm:-left-16 top-1/2 -translate-y-1/2 z-20">
+        <button
+          onClick={handlePrevious}
+          disabled={isLoading}
+          className="flex items-center justify-center h-12 w-12 sm:h-16 sm:w-16 rounded-full bg-white bg-opacity-20 backdrop-blur-md border border-white border-opacity-30 text-white hover:bg-opacity-30 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-xl"
+          title="Previous day"
+        >
+          <svg className="h-6 w-6 sm:h-8 sm:w-8" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+          </svg>
+        </button>
+      </div>
+
+      <div className="absolute -right-4 sm:-right-16 top-1/2 -translate-y-1/2 z-20">
+        <button
+          onClick={handleNext}
+          disabled={isLoading || dayOffset >= 0}
+          className="flex items-center justify-center h-12 w-12 sm:h-16 sm:w-16 rounded-full bg-white bg-opacity-20 backdrop-blur-md border border-white border-opacity-30 text-white hover:bg-opacity-30 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-xl"
+          title="Next day"
+        >
+          <svg className="h-6 w-6 sm:h-8 sm:w-8" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+          </svg>
+        </button>
+      </div>
+
+      {/* Date label */}
+      <div className="absolute top-4 left-1/2 -translate-x-1/2 z-20">
+        <div className="rounded-full bg-white bg-opacity-20 backdrop-blur-md border border-white border-opacity-30 px-6 py-2 shadow-xl">
+          <p className="text-white font-semibold text-sm sm:text-base">{getDateLabel()}</p>
+        </div>
+      </div>
+
+      {/* Loading overlay */}
+      {isLoading && (
+        <div className="absolute inset-0 bg-black bg-opacity-50 backdrop-blur-sm z-30 flex items-center justify-center rounded-3xl">
+          <div className="text-white text-xl font-semibold">Loading...</div>
+        </div>
+      )}
+
+      <div className="bg-white bg-opacity-10 backdrop-blur-md border border-white border-opacity-20 rounded-3xl overflow-hidden shadow-2xl">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
         {/* Left side - Featured Image */}
         <div className="relative aspect-square lg:aspect-auto lg:min-h-[600px] bg-gradient-to-br from-blue-100 to-indigo-100">
           {selectedImage ? (
@@ -202,6 +307,7 @@ export default function AnimatorOfTheDay({ animator }: AnimatorOfTheDayProps) {
             </Link>
           </div>
         </div>
+      </div>
       </div>
     </div>
   )
