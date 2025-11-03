@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
+import { createClient as createStaticClient } from '@supabase/supabase-js'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -15,7 +16,11 @@ interface PageProps {
 }
 
 export async function generateStaticParams() {
-  const supabase = await createClient()
+  // Use static client for build-time generation (no cookies)
+  const supabase = createStaticClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  )
 
   const { data: walls } = await supabase
     .from('walls')
