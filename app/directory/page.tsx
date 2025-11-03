@@ -4,6 +4,7 @@ import Image from 'next/image'
 import DirectoryFilters from '@/app/components/DirectoryFilters'
 import MobileMenu from '@/app/components/MobileMenu'
 import AnimatedLogo from '@/app/components/AnimatedLogo'
+import Footer from '@/app/components/Footer'
 
 // Helper function to format specialization names
 function formatSpecialization(spec: string): string {
@@ -266,6 +267,8 @@ export default async function DirectoryPage({ searchParams }: DirectoryPageProps
           </div>
         )}
       </main>
+
+      <Footer />
     </div>
   )
 }

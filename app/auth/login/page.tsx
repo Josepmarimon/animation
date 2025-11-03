@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import AnimatedLogo from '@/app/components/AnimatedLogo'
 
 export default function LoginPage() {
   const [email, setEmail] = useState('')
@@ -43,41 +44,9 @@ export default function LoginPage() {
 
       {/* Home Link */}
       <div className="absolute top-8 left-8 z-10">
-        <div className="hover:opacity-80 transition-opacity">
-          <h1 className="text-7xl font-bold tracking-wider">
-            {"Anim a a a tion".split('').map((letter, index, arr) => {
-              const isSpace = letter === ' '
-              const letterCount = arr.slice(0, index).filter(l => l !== ' ').length
-              return (
-                <span
-                  key={index}
-                  className={`inline-block text-white ${!isSpace ? 'animate-letter-fade' : ''}`}
-                  style={{
-                    animationDelay: !isSpace ? `${letterCount * 0.5}s` : undefined,
-                  }}
-                >
-                  {letter === ' ' ? '\u00A0' : letter}
-                </span>
-              )
-            })}
-          </h1>
-          <style jsx>{`
-            @keyframes letter-fade {
-              0%, 24.99% {
-                color: #ffffff;
-              }
-              25%, 74.99% {
-                color: #000000;
-              }
-              75%, 100% {
-                color: #ffffff;
-              }
-            }
-            .animate-letter-fade {
-              animation: letter-fade 1s steps(3, jump-none) forwards;
-            }
-          `}</style>
-        </div>
+        <Link href="/" className="hover:opacity-80 transition-opacity">
+          <AnimatedLogo className="text-4xl sm:text-5xl font-bold tracking-wider" />
+        </Link>
       </div>
 
       <div className="relative z-10 w-full max-w-md space-y-8">

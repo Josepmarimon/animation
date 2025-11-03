@@ -4,6 +4,7 @@ import Image from 'next/image'
 import InteractiveBackground from './components/InteractiveBackground'
 import MobileMenu from './components/MobileMenu'
 import AnimatedLogo from './components/AnimatedLogo'
+import Footer from './components/Footer'
 
 // Helper function to format specialization names
 function formatSpecialization(spec: string): string {
@@ -326,6 +327,8 @@ export default async function Home() {
           </div>
         </div>
       )}
+
+      <Footer />
     </div>
   )
 }

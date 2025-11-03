@@ -3,6 +3,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import MobileMenu from '@/app/components/MobileMenu'
 import AnimatedLogo from '@/app/components/AnimatedLogo'
+import Footer from '@/app/components/Footer'
 
 export default async function AboutPage() {
   const supabase = await createClient()
@@ -213,10 +214,12 @@ export default async function AboutPage() {
         <div className="mt-20 bg-white bg-opacity-10 backdrop-blur-md border border-white border-opacity-20 rounded-2xl shadow-2xl p-12 text-center">
           <h3 className="text-2xl font-bold text-white mb-4">Our Mission</h3>
           <p className="text-lg text-blue-100 max-w-3xl mx-auto">
-            Anim a a a tion connects animation professionals worldwide, providing a platform to showcase portfolios, discover talent, and build meaningful collaborations within the global animation community.
+            kframehub connects animation professionals worldwide, providing a platform to showcase portfolios, discover talent, and build meaningful collaborations within the global animation community.
           </p>
         </div>
       </main>
+
+      <Footer />
     </div>
   )
 }
