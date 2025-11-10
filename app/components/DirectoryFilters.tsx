@@ -92,9 +92,10 @@ const FLAT_SPECIALIZATIONS = SPECIALIZATIONS.flatMap(cat => cat.options)
 
 interface DirectoryFiltersProps {
   countries: string[]
+  availableSpecializations: string[]
 }
 
-export default function DirectoryFilters({ countries }: DirectoryFiltersProps) {
+export default function DirectoryFilters({ countries, availableSpecializations }: DirectoryFiltersProps) {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [isPending, startTransition] = useTransition()
@@ -136,6 +137,12 @@ export default function DirectoryFilters({ countries }: DirectoryFiltersProps) {
 
   const hasActiveFilters = selectedSpecialization || selectedCountry
 
+  // Filter categories to only show those with available specializations
+  const filteredCategories = SPECIALIZATIONS.map(category => ({
+    ...category,
+    options: category.options.filter(spec => availableSpecializations.includes(spec.value))
+  })).filter(category => category.options.length > 0)
+
   return (
     <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 mb-8">
       {/* Specialization Dropdown */}
@@ -148,7 +155,7 @@ export default function DirectoryFilters({ countries }: DirectoryFiltersProps) {
           className="w-full h-12 pl-4 pr-10 text-sm bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed appearance-none cursor-pointer hover:border-gray-300 transition-colors"
         >
           <option value="">All specializations</option>
-          {SPECIALIZATIONS.map((category) => (
+          {filteredCategories.map((category) => (
             <optgroup key={category.category} label={category.category}>
               {category.options.map((spec) => (
                 <option key={spec.value} value={spec.value}>

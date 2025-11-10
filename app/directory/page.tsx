@@ -37,16 +37,23 @@ export default async function DirectoryPage({ searchParams }: DirectoryPageProps
     userProfile = data
   }
 
-  // Get all countries for filter dropdown
+  // Get all countries and specializations for filter dropdowns
   const { data: allProfiles } = await supabase
     .from('profiles')
-    .select('country')
+    .select('country, specializations')
     .eq('is_public', true)
 
   const countries = Array.from(new Set(
     (allProfiles || [])
       .map(p => p.country)
       .filter((c): c is string => !!c)
+  )).sort()
+
+  // Extract all unique specializations from all profiles
+  const allSpecializations = Array.from(new Set(
+    (allProfiles || [])
+      .flatMap(p => p.specializations || [])
+      .filter((s): s is string => !!s)
   )).sort()
 
   // Build query with filters
@@ -132,7 +139,7 @@ export default async function DirectoryPage({ searchParams }: DirectoryPageProps
         </div>
 
         {/* Filters */}
-        <DirectoryFilters countries={countries} />
+        <DirectoryFilters countries={countries} availableSpecializations={allSpecializations} />
 
         {/* Results count */}
         {profiles && (
