@@ -124,11 +124,15 @@ export default async function AboutPage() {
 
                 <div className="prose prose-lg text-white space-y-4">
                   <p>
-                    Dr. Frank Maria is a distinguished animator and educator with decades of experience in stop motion animation. He serves as Coordinator of the Stop Motion Animation Master's program and the Audiovisual Design Department at BAU, Centro Universitario de Artes y Diseño.
+                    Dr. Frank Maria is an animator and educator with decades of experience in stop motion animation. He currently serves as Coordinator of the Master's in Stop Motion Animation and the Audiovisual Design Department at BAU, University Center of Arts and Design in Barcelona.
                   </p>
 
                   <p>
-                    His career includes directing the acclaimed children's series "KOKI" (sold to 26 countries), leading the 9zeros animation center, and creating award-winning work for TV3. He holds a Doctorate in Audiovisual Mediation and continues to shape the next generation of animation professionals.
+                    Throughout his career, he has animated the acclaimed children's series KOKI (distributed in 26 countries) and created advertising projects (for ACB, Seguros Asefa, and others), as well as TV openers and promos for major networks such as TV3 (Televisió de Catalunya). His award-winning work explores a wide range of animation techniques, including cut-out, sand animation, pixilation, experimental animation, and painting on glass.
+                  </p>
+
+                  <p>
+                    Through his doctoral research in Audiovisual Mediation, he explores how audiovisual media and animation can serve as tools to foster dialogue between communities and contribute to building a better society. He continues to train and inspire new generations of animation professionals, promoting creativity, technique, and audiovisual experimentation in all its forms.
                   </p>
                 </div>
 
@@ -137,7 +141,7 @@ export default async function AboutPage() {
                   <ul className="space-y-2 text-sm text-blue-100">
                     <li>• Doctorate in Audiovisual Mediation, BAU</li>
                     <li>• Master's in Fiction & Film Direction, Blanquerna</li>
-                    <li>• Coordinator, Stop Motion Animation Master's Program</li>
+                    <li>• Coordinator, Master's in Stop Motion Animation</li>
                     <li>• Laus Silver Award Winner (2010)</li>
                   </ul>
                 </div>
