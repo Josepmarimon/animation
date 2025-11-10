@@ -109,6 +109,8 @@ interface ContactInfo {
   behance?: string
   vimeo?: string
   youtube?: string
+  showreel_youtube?: string
+  showreel_vimeo?: string
 }
 
 export default function EditProfilePage() {
