@@ -1,0 +1,63 @@
+-- ========================================
+-- Add New Specialization ENUM Values
+-- ========================================
+-- Description: Adds all new comprehensive specialization values to the enum
+-- Note: Must be run before updating demo users
+
+-- Add all new specialization values to the ENUM
+ALTER TYPE animation_specialization ADD VALUE IF NOT EXISTS 'art_director';
+ALTER TYPE animation_specialization ADD VALUE IF NOT EXISTS 'scriptwriter';
+ALTER TYPE animation_specialization ADD VALUE IF NOT EXISTS 'storyboarder';
+ALTER TYPE animation_specialization ADD VALUE IF NOT EXISTS 'concept_artist';
+ALTER TYPE animation_specialization ADD VALUE IF NOT EXISTS 'matte_painter';
+ALTER TYPE animation_specialization ADD VALUE IF NOT EXISTS 'colorist';
+ALTER TYPE animation_specialization ADD VALUE IF NOT EXISTS 'lighting_designer';
+ALTER TYPE animation_specialization ADD VALUE IF NOT EXISTS 'sound_designer';
+ALTER TYPE animation_specialization ADD VALUE IF NOT EXISTS 'foley_artist';
+ALTER TYPE animation_specialization ADD VALUE IF NOT EXISTS 'voice_actor';
+ALTER TYPE animation_specialization ADD VALUE IF NOT EXISTS 'music_composer';
+ALTER TYPE animation_specialization ADD VALUE IF NOT EXISTS 'sound_mixer';
+ALTER TYPE animation_specialization ADD VALUE IF NOT EXISTS 'compositor_general';
+ALTER TYPE animation_specialization ADD VALUE IF NOT EXISTS 'editor';
+ALTER TYPE animation_specialization ADD VALUE IF NOT EXISTS 'vfx_artist';
+ALTER TYPE animation_specialization ADD VALUE IF NOT EXISTS 'color_grader';
+ALTER TYPE animation_specialization ADD VALUE IF NOT EXISTS 'render_artist';
+ALTER TYPE animation_specialization ADD VALUE IF NOT EXISTS 'pipeline_developer';
+ALTER TYPE animation_specialization ADD VALUE IF NOT EXISTS 'technical_artist';
+ALTER TYPE animation_specialization ADD VALUE IF NOT EXISTS 'animation_teacher';
+ALTER TYPE animation_specialization ADD VALUE IF NOT EXISTS 'workshop_facilitator';
+ALTER TYPE animation_specialization ADD VALUE IF NOT EXISTS 'festival_curator';
+ALTER TYPE animation_specialization ADD VALUE IF NOT EXISTS 'animation_historian';
+ALTER TYPE animation_specialization ADD VALUE IF NOT EXISTS 'stop_motion_animator';
+ALTER TYPE animation_specialization ADD VALUE IF NOT EXISTS 'puppet_fabricator';
+ALTER TYPE animation_specialization ADD VALUE IF NOT EXISTS 'armature_maker';
+ALTER TYPE animation_specialization ADD VALUE IF NOT EXISTS 'model_maker';
+ALTER TYPE animation_specialization ADD VALUE IF NOT EXISTS 'set_builder';
+ALTER TYPE animation_specialization ADD VALUE IF NOT EXISTS 'costume_designer_mini';
+ALTER TYPE animation_specialization ADD VALUE IF NOT EXISTS 'cutout_animator';
+ALTER TYPE animation_specialization ADD VALUE IF NOT EXISTS 'puppet_designer';
+ALTER TYPE animation_specialization ADD VALUE IF NOT EXISTS 'stop_motion_director';
+ALTER TYPE animation_specialization ADD VALUE IF NOT EXISTS 'stop_motion_producer';
+ALTER TYPE animation_specialization ADD VALUE IF NOT EXISTS 'stop_motion_compositor';
+ALTER TYPE animation_specialization ADD VALUE IF NOT EXISTS 'camera_operator_sm';
+ALTER TYPE animation_specialization ADD VALUE IF NOT EXISTS 'dop_stop_motion';
+ALTER TYPE animation_specialization ADD VALUE IF NOT EXISTS 'motion_control_operator';
+ALTER TYPE animation_specialization ADD VALUE IF NOT EXISTS 'paper_cutout';
+ALTER TYPE animation_specialization ADD VALUE IF NOT EXISTS 'pixilation';
+ALTER TYPE animation_specialization ADD VALUE IF NOT EXISTS 'rotoscoping';
+ALTER TYPE animation_specialization ADD VALUE IF NOT EXISTS 'sand_animation';
+ALTER TYPE animation_specialization ADD VALUE IF NOT EXISTS 'light_animation';
+ALTER TYPE animation_specialization ADD VALUE IF NOT EXISTS 'paint_on_glass';
+ALTER TYPE animation_specialization ADD VALUE IF NOT EXISTS 'experimental_animation';
+ALTER TYPE animation_specialization ADD VALUE IF NOT EXISTS 'hybrid_techniques';
+ALTER TYPE animation_specialization ADD VALUE IF NOT EXISTS 'music_video';
+ALTER TYPE animation_specialization ADD VALUE IF NOT EXISTS 'commercial_animation';
+ALTER TYPE animation_specialization ADD VALUE IF NOT EXISTS 'short_film';
+ALTER TYPE animation_specialization ADD VALUE IF NOT EXISTS 'documentary_animation';
+ALTER TYPE animation_specialization ADD VALUE IF NOT EXISTS 'social_project';
+ALTER TYPE animation_specialization ADD VALUE IF NOT EXISTS 'educational_animation';
+ALTER TYPE animation_specialization ADD VALUE IF NOT EXISTS 'scientific_viz';
+ALTER TYPE animation_specialization ADD VALUE IF NOT EXISTS 'activism_animation';
+ALTER TYPE animation_specialization ADD VALUE IF NOT EXISTS 'art_installation';
+ALTER TYPE animation_specialization ADD VALUE IF NOT EXISTS 'live_events';
+ALTER TYPE animation_specialization ADD VALUE IF NOT EXISTS 'character_designer';
