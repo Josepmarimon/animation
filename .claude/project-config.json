@@ -1,0 +1,13 @@
+{
+  "projectName": "animation",
+  "repository": "https://github.com/Josepmarimon/animation.git",
+  "supabase": {
+    "projectId": "ejsaxspiunmyebveufon",
+    "url": "https://ejsaxspiunmyebveufon.supabase.co"
+  },
+  "workingDirectory": "/Users/josepmarimon/Documents/github/animation",
+  "relatedProjects": {
+    "hificafe": "/Users/josepmarimon/Documents/github/hificafe"
+  },
+  "notes": "Este es el proyecto de animation/stop-motion. NO confundir con hificafe."
+}
