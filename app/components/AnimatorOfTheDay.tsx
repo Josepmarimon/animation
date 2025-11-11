@@ -97,8 +97,8 @@ export default function AnimatorOfTheDay({ animator: initialAnimator, initialDay
 
   return (
     <div className="relative">
-      {/* Navigation arrows */}
-      <div className="absolute -left-4 sm:-left-16 top-1/2 -translate-y-1/2 z-20">
+      {/* Navigation arrows - hidden on mobile */}
+      <div className="hidden sm:block absolute -left-4 sm:-left-16 top-1/2 -translate-y-1/2 z-20">
         <button
           onClick={handlePrevious}
           disabled={isLoading}
@@ -111,7 +111,7 @@ export default function AnimatorOfTheDay({ animator: initialAnimator, initialDay
         </button>
       </div>
 
-      <div className="absolute -right-4 sm:-right-16 top-1/2 -translate-y-1/2 z-20">
+      <div className="hidden sm:block absolute -right-4 sm:-right-16 top-1/2 -translate-y-1/2 z-20">
         <button
           onClick={handleNext}
           disabled={isLoading || dayOffset >= 0}
@@ -141,7 +141,7 @@ export default function AnimatorOfTheDay({ animator: initialAnimator, initialDay
       <div className="bg-white bg-opacity-10 backdrop-blur-md border border-white border-opacity-20 rounded-3xl overflow-hidden shadow-2xl">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
         {/* Left side - Featured Image */}
-        <div className="relative aspect-square lg:aspect-auto lg:min-h-[600px] bg-gradient-to-br from-blue-100 to-indigo-100">
+        <div className="relative aspect-[4/3] sm:aspect-square lg:aspect-auto lg:min-h-[600px] bg-gradient-to-br from-blue-100 to-indigo-100">
           {selectedImage ? (
             <Image
               src={selectedImage.url}
