@@ -59,8 +59,8 @@ export default async function Home() {
 
   return (
     <div className="relative min-h-screen bg-gradient-to-br from-blue-600 via-indigo-700 to-purple-800">
-      {/* Background Image with Interactive Popup */}
-      <div className="absolute inset-0 overflow-hidden z-[1]">
+      {/* Background Image with Interactive Popup - hidden on mobile */}
+      <div className="hidden sm:block absolute inset-0 overflow-hidden z-[1]">
         <InteractiveBackground />
       </div>
 
