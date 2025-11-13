@@ -94,32 +94,79 @@ export default async function DirectoryPage({ searchParams }: DirectoryPageProps
 
             {/* Desktop Navigation - Hidden on mobile */}
             <div className="hidden lg:flex items-center space-x-4">
-              <Link
-                href="/about"
-                className="rounded-lg bg-white bg-opacity-20 backdrop-blur-sm px-5 py-2.5 text-sm font-medium text-white hover:bg-opacity-30 transition-all"
-              >
-                About
-              </Link>
-              {user && (
-                <Link
-                  href="/profile"
-                  className="flex items-center justify-center w-12 h-12 rounded-full bg-white bg-opacity-20 backdrop-blur-sm hover:bg-opacity-30 transition-all overflow-hidden border-2 border-white border-opacity-30"
-                  title="My Profile"
-                >
-                  {userProfile?.avatar_url ? (
-                    <Image
-                      src={userProfile.avatar_url}
-                      alt={userProfile.full_name || 'Profile'}
-                      width={48}
-                      height={48}
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center text-white font-bold text-lg">
-                      {userProfile?.full_name?.charAt(0).toUpperCase() || user.email?.charAt(0).toUpperCase() || '?'}
-                    </div>
-                  )}
-                </Link>
+              {user ? (
+                <>
+                  <Link
+                    href="/directory"
+                    className="rounded-lg bg-white px-5 py-2.5 text-sm font-medium text-blue-700 hover:bg-gray-100 transition-all"
+                  >
+                    Directory
+                  </Link>
+                  <Link
+                    href="/wall"
+                    className="rounded-lg bg-white bg-opacity-20 backdrop-blur-sm px-5 py-2.5 text-sm font-medium text-white hover:bg-opacity-30 transition-all"
+                  >
+                    Walls
+                  </Link>
+                  <Link
+                    href="/about"
+                    className="rounded-lg bg-white bg-opacity-20 backdrop-blur-sm px-5 py-2.5 text-sm font-medium text-white hover:bg-opacity-30 transition-all"
+                  >
+                    About
+                  </Link>
+                  <Link
+                    href="/profile"
+                    className="flex items-center justify-center w-12 h-12 rounded-full bg-white bg-opacity-20 backdrop-blur-sm hover:bg-opacity-30 transition-all overflow-hidden border-2 border-white border-opacity-30"
+                    title="My Profile"
+                  >
+                    {userProfile?.avatar_url ? (
+                      <Image
+                        src={userProfile.avatar_url}
+                        alt={userProfile.full_name || 'Profile'}
+                        width={48}
+                        height={48}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-white font-bold text-lg">
+                        {userProfile?.full_name?.charAt(0).toUpperCase() || user.email?.charAt(0).toUpperCase() || '?'}
+                      </div>
+                    )}
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <Link
+                    href="/directory"
+                    className="rounded-lg bg-white px-5 py-2.5 text-sm font-medium text-blue-700 hover:bg-gray-100 transition-all"
+                  >
+                    Directory
+                  </Link>
+                  <Link
+                    href="/wall"
+                    className="rounded-lg bg-white bg-opacity-20 backdrop-blur-sm px-5 py-2.5 text-sm font-medium text-white hover:bg-opacity-30 transition-all"
+                  >
+                    Walls
+                  </Link>
+                  <Link
+                    href="/about"
+                    className="rounded-lg bg-white bg-opacity-20 backdrop-blur-sm px-5 py-2.5 text-sm font-medium text-white hover:bg-opacity-30 transition-all"
+                  >
+                    About
+                  </Link>
+                  <Link
+                    href="/auth/login"
+                    className="rounded-lg bg-white bg-opacity-20 backdrop-blur-sm px-5 py-2.5 text-sm font-medium text-white hover:bg-opacity-30 transition-all"
+                  >
+                    Log in
+                  </Link>
+                  <Link
+                    href="/auth/signup"
+                    className="rounded-lg bg-white px-5 py-2.5 text-sm font-medium text-blue-700 hover:bg-gray-100 transition-all shadow-lg"
+                  >
+                    Sign up
+                  </Link>
+                </>
               )}
             </div>
 
