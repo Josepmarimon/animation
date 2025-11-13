@@ -103,6 +103,12 @@ export default async function ProfilePage() {
                 Directory
               </Link>
               <Link
+                href="/wall"
+                className="rounded-lg bg-white bg-opacity-20 backdrop-blur-sm px-5 py-2.5 text-sm font-medium text-white hover:bg-opacity-30 transition-all"
+              >
+                Walls
+              </Link>
+              <Link
                 href="/about"
                 className="rounded-lg bg-white bg-opacity-20 backdrop-blur-sm px-5 py-2.5 text-sm font-medium text-white hover:bg-opacity-30 transition-all"
               >
