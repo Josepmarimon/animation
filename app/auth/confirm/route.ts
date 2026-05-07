@@ -1,11 +1,13 @@
 import { createServerClient, type CookieOptions } from '@supabase/ssr'
+import type { EmailOtpType } from '@supabase/supabase-js'
 import { cookies } from 'next/headers'
 import { NextResponse, type NextRequest } from 'next/server'
 import { ensureUserProfile } from '@/lib/auth/ensure-profile'
 
 export async function GET(request: NextRequest) {
   const requestUrl = new URL(request.url)
-  const code = requestUrl.searchParams.get('code')
+  const token_hash = requestUrl.searchParams.get('token_hash')
+  const type = requestUrl.searchParams.get('type') as EmailOtpType | null
   const next = requestUrl.searchParams.get('next') ?? '/'
 
   const errorParam = requestUrl.searchParams.get('error')
@@ -21,9 +23,9 @@ export async function GET(request: NextRequest) {
     )
   }
 
-  if (!code) {
+  if (!token_hash || !type) {
     return NextResponse.redirect(
-      new URL('/auth/auth-code-error?reason=no_code', requestUrl.origin)
+      new URL('/auth/auth-code-error?reason=missing_params', requestUrl.origin)
     )
   }
 
@@ -50,12 +52,12 @@ export async function GET(request: NextRequest) {
     }
   )
 
-  const { data, error: exchangeError } = await supabase.auth.exchangeCodeForSession(code)
+  const { data, error } = await supabase.auth.verifyOtp({ type, token_hash })
 
-  if (exchangeError) {
+  if (error) {
     return NextResponse.redirect(
       new URL(
-        `/auth/auth-code-error?reason=exchange_failed&details=${encodeURIComponent(exchangeError.message)}`,
+        `/auth/auth-code-error?reason=verify_failed&details=${encodeURIComponent(error.message)}`,
         requestUrl.origin
       )
     )

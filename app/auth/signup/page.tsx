@@ -32,7 +32,7 @@ export default function SignupPage() {
           country,
           city,
         },
-        emailRedirectTo: `${window.location.origin}/auth/callback?next=/profile/edit`,
+        emailRedirectTo: `${window.location.origin}/auth/confirm?next=/profile/edit`,
       },
     })
 
