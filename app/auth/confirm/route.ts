@@ -8,6 +8,7 @@ export async function GET(request: NextRequest) {
   const requestUrl = new URL(request.url)
   const token_hash = requestUrl.searchParams.get('token_hash')
   const type = requestUrl.searchParams.get('type') as EmailOtpType | null
+  const code = requestUrl.searchParams.get('code')
   const next = requestUrl.searchParams.get('next') ?? '/'
 
   const errorParam = requestUrl.searchParams.get('error')
@@ -23,7 +24,7 @@ export async function GET(request: NextRequest) {
     )
   }
 
-  if (!token_hash || !type) {
+  if (!code && (!token_hash || !type)) {
     return NextResponse.redirect(
       new URL('/auth/auth-code-error?reason=missing_params', requestUrl.origin)
     )
@@ -52,7 +53,21 @@ export async function GET(request: NextRequest) {
     }
   )
 
-  const { data, error } = await supabase.auth.verifyOtp({ type, token_hash })
+  if (code) {
+    const { data, error } = await supabase.auth.exchangeCodeForSession(code)
+    if (error) {
+      return NextResponse.redirect(
+        new URL(
+          `/auth/auth-code-error?reason=exchange_failed&details=${encodeURIComponent(error.message)}`,
+          requestUrl.origin
+        )
+      )
+    }
+    if (data?.user) await ensureUserProfile(supabase, data.user)
+    return response
+  }
+
+  const { data, error } = await supabase.auth.verifyOtp({ type: type!, token_hash: token_hash! })
 
   if (error) {
     return NextResponse.redirect(
