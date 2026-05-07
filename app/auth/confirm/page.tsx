@@ -44,10 +44,10 @@ async function confirmEmail(formData: FormData) {
   redirect(next)
 }
 
-export default async function ConfirmPage({
+export default function ConfirmPage({
   searchParams,
 }: {
-  searchParams: Promise<{
+  searchParams: {
     token_hash?: string
     type?: string
     code?: string
@@ -55,9 +55,9 @@ export default async function ConfirmPage({
     error?: string
     error_code?: string
     error_description?: string
-  }>
+  }
 }) {
-  const params = await searchParams
+  const params = searchParams
 
   if (params.error || params.error_code) {
     redirect(
